@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import RSSdataroma
 import Financial
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public')
 
 @app.route('/')
 def home():
