@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+        .banner {
+            width: 300px;
+            /* Šířka banneru */
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            max-height: 100vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class=" container row">
+        <div class="col-8">
+            <h1>Hello, {{ name }}!</h1>
+
+            <form id="myForm" class="mb-4">
+                <div class="mb-3">
+
+                    <label for="ticker_symbol" class="form-label">Zadejte data:</label>
+                    <input type="text" id="ticker_symbol" name="ticker_symbol" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Odeslat</button>
+            </form>
+
+            <div id="result"></div>
+        </div>
+        <div class="col-4">
+            <!-- Banner pro RSS feed -->
+            <div id="rss-feed" class="banner">
+                <p>Loading feed...</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        // Funkce pro načtení RSS feedu
+        function loadRSSFeed() {
+            fetch('/feed')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('rss-feed').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading RSS feed:', error);
+                    document.getElementById('rss-feed').innerHTML = '<p>Error loading feed.</p>';
+                });
+        }
+
+        // Načtení feedu při načtení stránky
+        window.onload = loadRSSFeed;
+
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
+
+            const formData = new FormData(this);
+
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Zobrazení odpovědi
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.innerHTML = `
+                <div class="container mt-5">
+        <h2 class="text-center">Výsledky ${data['Ticker'].toLocaleString()}</h2>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>Cash Equivalents:</strong> $${data['Cash Equivalents'].toLocaleString()}</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Free Cash Flow</h3>
+                <ul class="list-group list-group-flush">
+                    ${data['Free Cash Flow'].map(fcf => `<li class="list-group-item">$${fcf.toLocaleString()}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>FCF Growth:</strong> ${data['FCF Growth'].join(', ')}</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>Growth Average:</strong> $${data['Growth Average'].toLocaleString()}</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Future Free Cash Flow</h3>
+                <ul class="list-group list-group-flush">
+                    ${data['Future FCF'].map(fcf => `<li class="list-group-item">$${fcf.toLocaleString()}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>Terminal Value:</strong> $${data['Terminal Value'].toLocaleString()}</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">PV of Future FCF</h3>
+                <ul class="list-group list-group-flush">
+                    ${data['PV of Future FCF'].map(pv => `<li class="list-group-item">$${pv.toLocaleString()}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>Sum of FCF:</strong> $${data['Sum of FCF'].toLocaleString()}</p>
+                <p class="card-text"><strong>Equity Value:</strong> $${data['Equity Value'].toLocaleString()}</p>
+                <p class="card-text"><strong>Shares Outstanding:</strong> ${data['Shares Outstanding'].toLocaleString()}</p>
+                <p class="card-text"><strong>DCF Price per Share:</strong> $${data['DCF Price per Share'].toLocaleString()}</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Financial Ratios</h3>
+                <ul class="list-group list-group-flush">
+                    ${Object.entries(data['Financial Ratios']).map(([ratio, value]) => `<li class="list-group-item"><strong>${ratio}:</strong> ${value}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text"><strong>Revenue Growth:</strong> ${data['Revenue Growth']}%</p>
+                <p class="card-text"><strong>Earnings Growth:</strong> ${data['Earnings Growth']}%</p>
+            </div>
+        </div>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Free Cash Flow (Reversed)</h3>
+                <ul class="list-group list-group-flush">
+                    ${data['Free Cash Flow'].map(fcf => `<li class="list-group-item">$${fcf.toLocaleString()}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+    </div>
+                `;
+                })
+                .catch(error => {
+                    console.error('Chyba:', error);
+                });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</body>
+
+</html>
