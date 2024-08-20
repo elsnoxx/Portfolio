@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %} Home page  {% endblock %}
+{% block content %} 
+<h1>Crypto</h1>
+<div id="BTC_data" class="BTC_data">
+    <p>Loading data...</p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    function loadBitcoinData() {
+        fetch('/bitcoinData')
+            .then(response => response.json())  // Parse response as JSON
+            .then(data => {
+                const content = `
+                    <div style="display: flex; justify-content: space-between;">
+                        <div><strong>Ticker:</strong> BTC</div>
+                        <div><strong>Current Price:</strong> $${data.current_price}</div>
+                        <div><strong>High 24h:</strong> $${data.high_24h}</div>
+                        <div><strong>Low 24h:</strong> $${data.low_24h}</div>
+                        <div><strong>Price Change 24h %:</strong> ${data.price_change_percentage_24h}%</div>
+                        <div><strong>ATH Change %:</strong> ${data.ath_change_percentage}%</div>
+                        <div><strong>ATH:</strong> $${data.ath}</div>
+                        <div><strong>Market Cap:</strong> $${data.market_cap}</div>
+                    </div>`;
+                
+                const btcDataElement = document.getElementById('BTC_data');
+                if (btcDataElement) {
+                    btcDataElement.innerHTML = content;
+                } else {
+                    console.error("Element with ID 'BTC_data' not found.");
+                }
+            })
+            .catch(error => {
+                console.error('Error loading Bitcoin data:', error);
+            });
+    }
+
+    // Load data when the page loads
+    window.onload = loadBitcoinData;
+</script>
+{% endblock %}

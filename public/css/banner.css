@@ -1,11 +1,12 @@
 .banner {
+    padding-top: 60px;
     width: 300px;
     /* Šířka banneru */
     padding: 10px;
     border: 1px solid #ddd;
     background-color: #f9f9f9;
     position: fixed;
-    top: 10px;
+    top: 60px;
     right: 10px;
     max-height: 100vh;
     overflow-y: auto;
