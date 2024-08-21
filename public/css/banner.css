@@ -1,6 +1,6 @@
 .banner {
     padding-top: 60px;
-    width: 300px;
+    width: 400px;
     /* Šířka banneru */
     padding: 10px;
     border: 1px solid #ddd;
@@ -11,3 +11,56 @@
     max-height: 100vh;
     overflow-y: auto;
 }
+
+/* Styl pro kartu */
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 15px 0;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.card-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.card-text {
+    font-size: 1em;
+    color: #555555;
+}
+
+.card-text a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.card-text a:hover {
+    text-decoration: underline;
+}
+

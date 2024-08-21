@@ -25,44 +25,20 @@ def get_feed_html():
     feed = feedparser.parse(url)
     html_output = []
 
-    html_output.append('<html>')
-    html_output.append('''
-        <head>
-            <style>
-            table {{
-                font-family: arial, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-            }}
-
-            td, th {{
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 8px;
-            }}
-
-            tr:nth-child(even) {{
-                background-color: #dddddd;
-            }}
-            h2 {{
-                text-align: center;
-            }}
-            </style>
-        </head>
-    ''')
-    html_output.append('<body>')
-
-    html_output.append(f"<h1>{feed.feed.title}</h1>")
+    html_output.append(f"<h1>Portfolio updates</h1>")
     html_output.append(f"<p>{feed.feed.description}</p>")
 
     for entry in feed.entries:
-        html_output.append(f"<h3>{entry.title}</h3>")
+        html_output.append(f'<div class="feed_info card">')
+        html_output.append(f'<div class="card-body">')
+        html_output.append(f'<h3 class="card-title" >{entry.title}</h3>')
         html_output.append(f'<a href="{entry.link}" target="_blank" rel="noopener noreferrer">link</a><br>')
+        html_output.append(f'<div class="card-text">')
         tickers = extract_tickers(entry.description)
         formatted_html = format_tickers(tickers)
         html_output.append(formatted_html)
-
-    html_output.append('</body>')
-    html_output.append('</html>')
+        html_output.append(f"</div>")
+        html_output.append(f"</div>")
+        html_output.append(f"</div>")
 
     return ''.join(html_output)
