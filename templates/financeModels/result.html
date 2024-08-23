@@ -1,0 +1,115 @@
+<link rel="stylesheet" href="/public/css/stockResult.css">
+
+<div class="containerResult mt-5">
+
+    <!-- Základní údaje o společnosti -->
+    <div class="section">
+        <h2>Základní údaje o společnosti {{ TickerSymbol }}</h2>
+        <div class="data-row">
+            <span class="label">Název společnosti:</span>
+            <span class="value">{{ longName }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Ticker (symbol):</span>
+            <span class="value">{{ TickerSymbol }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Tržní kapitalizace:</span>
+            <span class="value">{{ marketCap }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Odvětví:</span>
+            <span class="value">{{ sector }}</span>
+        </div>
+    </div>
+
+    <!-- 52 Týdenní Cenová Stupnice -->
+    <div class="section mt-4">
+        <h2>52 Týdenní Cenová Stupnice</h2>
+        <div class="price-scale">
+            <div class="current-price" style="left: calc(({{currentPrice}} - {{fiftyTwoWeekLow}}) / ({{fiftyTwoWeekHigh}} - {{fiftyTwoWeekLow}}) * 100%)"></div>
+        </div>
+        <div class="labels">
+            <div>52 týdenní minimum: ${{fiftyTwoWeekLow}}</div>
+            <div>Aktuální cena: ${{ currentPrice }}</div>
+            <div>52 týdenní maximum: ${{fiftyTwoWeekHigh}}</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Shrnutí a doporučení</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="data-row">
+                    <span class="label">Doporučení:</span>
+                    <span class="value">{{ recommendation_key }}</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Počet analytických doporučení:</span>
+                    <span class="value">{{ number_of_analyst_opinions }}</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Cílová vysoká cena:</span>
+                    <span class="value">{{ target_high_price }} $</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Průměrná cílová cena:</span>
+                    <span class="value">{{ target_mean_price }} $</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Cílová nízká cena:</span>
+                    <span class="value">{{ target_low_price }} $</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+
+        </div>
+    </div>
+
+
+    
+</div>
+
+    <!-- Další Finanční Ukazatele -->
+    <div class="section mt-4">
+        <h2>Další Finanční Ukazatele</h2>
+        <div class="data-row">
+            <span class="label">Poslední Dividenda:</span>
+            <span class="value">${{ lst_div }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Mediánový Růst Dividend:</span>
+            <span class="value">{{ median_growth }}%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Náklady Vlastního Kapitálu (COE):</span>
+            <span class="value">{{ coe }}%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Odhad Budoucí Dividend:</span>
+            <span class="value">${{ exp_future_div }}</span>
+        </div>
+    </div>
+
+    <!-- Historie a Odhady Dividend -->
+    <div class="section mt-4">
+        <h2>Historie a Odhady Dividend</h2>
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Historie Dividend</h3>
+                {% if stock_grp != 'None' %}
+                <ul class="list-group list-group-flush">
+                    {% for year, div in stock_grp.items %}
+                    <li class="list-group-item"><strong>{{ year }}:</strong> ${{ div }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No dividend history available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>

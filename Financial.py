@@ -42,12 +42,24 @@ def get_financial_ratios(info):
     }
     return ratios
 
-def calculate_financial_metrics(ticker_symbol):
-    try:
-        # Nastavíme ticker symbol
-        ticker = yf.Ticker(ticker_symbol)
 
+def formatMarketCap(marketCap):
+    if marketCap >= 1_000_000_000_000:
+        return f"{marketCap / 1_000_000_000_000:.2f} T"
+    elif marketCap >= 1_000_000_000:
+        return f"{marketCap / 1_000_000_000:.2f} B"
+    elif marketCap >= 1_000_000:
+        return f"{marketCap / 1_000_000:.2f} M"
+    else:
+        return str(marketCap)
+
+
+
+
+def calculate_financial_metrics(ticker, ticker_symbol):
+    try:
         info = ticker.info
+        print(info)
         CashEquivalents = ticker.balance_sheet.loc["Cash Cash Equivalents And Short Term Investments"].to_list()[0]
         print("Cash Equivalents:", CashEquivalents)
 
@@ -117,7 +129,14 @@ def calculate_financial_metrics(ticker_symbol):
         print(f"Free Cash Flow: {fcf}")
 
         return {
-            'Ticker' : ticker_symbol,
+            'TickerSymbol' : info.get('symbol', 0),
+            'sector' : info.get("sector", 0),
+            'longBusinessSummary' : info.get('longBusinessSummary', 0),
+            'longName': info.get('longName', 0),
+            'marketCap' : formatMarketCap(info.get('marketCap', 0)),
+            'fiftyTwoWeekLow' : info.get('fiftyTwoWeekLow', 0),
+            'fiftyTwoWeekHigh' : info.get('fiftyTwoWeekHigh', 0),
+            'currentPrice': info.get('currentPrice', 0),
             'Cash Equivalents': info.get("cash", 0),
             'Free Cash Flow': fcf,
             'FCF Growth': fcfGrowth,
@@ -131,8 +150,59 @@ def calculate_financial_metrics(ticker_symbol):
             'DCF Price per Share': DCFprice,
             'Financial Ratios': financial_ratios,
             'Revenue Growth': revenue_growth,
-            'Earnings Growth': earnings_growth
+            'Earnings Growth': earnings_growth,
+            'Target High Price': info.get('targetHighPrice', 0),
+            'Target Low Price': info.get('targetLowPrice', 0),
+            'Target Mean Price': info.get('targetMeanPrice', 0),
+            'Target Median Price': info.get('targetMedianPrice', 0),
+            'Recommendation Mean': info.get('recommendationMean', 0),
+            'Recommendation Key': info.get('recommendationKey', 0),
+            'Number of Analyst Opinions': info.get('numberOfAnalystOpinions', 0)
         }
 
     except Exception as e:
         return {'error': str(e)}
+
+
+def Dividend_Discount_Model(ticker):
+    if 'dividendRate' not in ticker.info:
+        print("Dividend rate not available for this ticker.")
+        return None
+    
+    stock = ticker.actions
+    stock_split = stock["Stock Splits"].to_numpy()
+    stock_split_replaced = np.where(stock_split == 0, 1, stock_split)
+    stock_split_comp = np.cumprod(stock_split_replaced, axis=0)
+    
+    stock["stocksplit_adj"] = stock_split_comp.tolist()
+    stock["div_adj"] = stock["Dividends"] * stock["stocksplit_adj"]
+    stock['year'] = stock.index.year
+    stock_grp = stock.groupby(by=["year"]).sum()
+    stock_grp["div_PCT_Change"] = stock_grp["div_adj"].pct_change(fill_method=None)
+    
+    median_growth = stock_grp["div_PCT_Change"].median()
+    lst_Div = stock_grp.at[2021,'Dividends']
+    exp_future_div = round(lst_Div * (1 + median_growth), 2)
+    risk_free_rate = 0.03
+    mkt_return = .11
+    MKT_Risk_prem = mkt_return - risk_free_rate
+    beta = ticker.info["beta"]
+    COE = round(beta * MKT_Risk_prem + risk_free_rate, 4)
+    fair_sharePrice = round(exp_future_div / ( median_growth - COE), 2)
+    stock_price = ticker.history(period="1d")
+    stock_price_close = round(stock_price.iloc[0]['Close'], 4)
+    expected_gain_loss = fair_sharePrice / stock_price_close - 1
+    expected_gain_loss = "{:.0%}".format(expected_gain_loss)
+
+    # Vrátíme relevantní data
+    return {
+        'ticker': ticker.ticker,
+        'stock_price_close': stock_price_close,
+        'fair_share_price': fair_sharePrice,
+        'expected_gain_loss': expected_gain_loss,
+        'lst_div': lst_Div,
+        'median_growth': round(median_growth * 100, 2),  # přepočet na procenta
+        'coe': round(COE * 100, 2),  # přepočet na procenta
+        'exp_future_div': exp_future_div,
+        'stock_grp': stock_grp['div_adj'].to_dict()  # rok a odpovídající dividendy
+    }

@@ -1,0 +1,73 @@
+<div class="containerResult mt-5">
+    <!-- DCF Výpočet -->
+    <div class="section mt-5">
+        <h2>DCF Výpočet pro {{ TickerSymbol }}</h2>
+        <div class="data-row">
+            <span class="label">DCF Cena na Akcii:</span>
+            <span class="value">${{ dcf_price_per_share }}</span>
+        </div>
+        <div class="data-row">
+            <h3>Free Cash Flow</h3>
+            <ul class="list-group list-group-flush">
+                {% for fcf in free_cash_flow %}
+                <li class="list-group-item">${{ fcf }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Podrobnosti DCF Výpočtu -->
+        <div class="section mt-4">
+            <h3>Podrobnosti DCF Výpočtu</h3>
+            <div class="data-row">
+                <span class="label">Terminal Value:</span>
+                <span class="value">${{ Terminal_Value }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Součet FCF:</span>
+                <span class="value">${{ Sum_of_FCF }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Hodnota Vlastního Kapitálu:</span>
+                <span class="value">${{ Equity_Value }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Počet Vydaných Akcií:</span>
+                <span class="value">{{ Shares_Outstanding }}</span>
+            </div>
+            <div class="data-row">
+                <span class="label">DCF Cena na Akcii:</span>
+                <span class="value">${{ dcf_price_per_share }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Růst Tržeb a Zisků -->
+    <div class="section mt-4">
+        <h2>Růst Tržeb a Zisků</h2>
+        <div class="data-row">
+            <span class="label">Růst Tržeb:</span>
+            <span class="value">{{ Revenue_Growth }}%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Růst Zisků:</span>
+            <span class="value">{{ Earnings_Growth }}%</span>
+        </div>
+    </div>
+
+    <!-- Závěrečný Výstup -->
+    <div class="section mt-4">
+        <h2>Závěrečný Výstup</h2>
+        <div class="data-row">
+            <span class="label">DCF Cena na Akcii:</span>
+            <span class="value">${{ dcf_price_per_share }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Aktuální Cena:</span>
+            <span class="value">${{ currentPrice }}</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Sleva na DCF Hodnotu:</span>
+            <span class="value">{{ ((dcf_price_per_share - currentPrice) / dcf_price_per_share) }}%</span>
+        </div>
+    </div>
+</div>
