@@ -54,6 +54,8 @@ def submit():
     if metrics == 1:
         return jsonify({"error": "Bad ticker"})
     else:
+        # rendered_html = render_template('/financeModels/result.html', **common_data)
+        # return jsonify({'html': rendered_html})
         if DividendDiscountModel is not None:
 
             # Data specifická pro DCF.html
@@ -65,7 +67,8 @@ def submit():
                 'Revenue_Growth': metrics['Revenue Growth'],
                 'Earnings_Growth': metrics['Earnings Growth'],
                 'dcf_price_per_share': metrics['DCF Price per Share'],
-                'currentPrice': metrics['currentPrice']
+                'currentPrice': metrics['currentPrice'],
+                'stock_grp': DividendDiscountModel['stock_grp'].items()
             }
 
             # Data specifická pro DDM
@@ -76,14 +79,14 @@ def submit():
                 'lst_div': DividendDiscountModel['lst_div'],
                 'median_growth': DividendDiscountModel['median_growth'],
                 'coe': DividendDiscountModel['coe'],
-                'exp_future_div': DividendDiscountModel['exp_future_div'],
-                'stock_grp': DividendDiscountModel['stock_grp'].items()
+                'exp_future_div': DividendDiscountModel['exp_future_div']
             }
 
 
             rendered_html_dcf = render_template('/financeModels/DCF.html', **dcf_data)
 
-            rendered_html = render_template('/financeModels/result.html', **common_data, **ddm_data)
+            rendered_html = render_template('/financeModels/result.html', **common_data)
+            return jsonify({'html': rendered_html + rendered_html_dcf})
         else:
             rendered_html = render_template('/financeModels/result.html',
                                             **common_data,
@@ -93,10 +96,11 @@ def submit():
                                             lst_div=None,
                                             median_growth=None,
                                             coe=None,
-                                            exp_future_div=None,
-                                            stock_grp='None')
-
-        return jsonify({'html': rendered_html + rendered_html_dcf})
+                                            exp_future_div=None)
+            
+        
+            return jsonify({'html': rendered_html })
+        
 
 
 
@@ -116,8 +120,6 @@ def bitcoinData():
     url = "https://api.coingecko.com/api/v3/coins/bitcoin"
     data = DataCrypto.bitcoinData(url, ticker_symbol)
 
-    DataCrypto.tickerToURL(ticker_symbol)
-
     rendered_html = render_template('/crypto/infoCryptp.html', 
                                     symbol=data['symbol'], 
                                     current_price=data['current_price'], 
@@ -135,4 +137,5 @@ def page_not_found(e):
     return render_template('404.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+    # app.run(debug=True)

@@ -93,23 +93,6 @@
         </div>
     </div>
 
-    <!-- Historie a Odhady Dividend -->
-    <div class="section mt-4">
-        <h2>Historie a Odhady Dividend</h2>
-        <div class="card my-4">
-            <div class="card-body">
-                <h3 class="card-title">Historie Dividend</h3>
-                {% if stock_grp != 'None' %}
-                <ul class="list-group list-group-flush">
-                    {% for year, div in stock_grp.items %}
-                    <li class="list-group-item"><strong>{{ year }}:</strong> ${{ div }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <p>No dividend history available.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    
 
 </div>
