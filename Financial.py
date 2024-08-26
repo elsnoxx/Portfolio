@@ -127,7 +127,7 @@ def calculate_financial_metrics(ticker, ticker_symbol):
         fcf = cashflow.loc["Free Cash Flow"].dropna().to_list()
         fcf.reverse()
         print(f"Free Cash Flow: {fcf}")
-
+        print("tohle je symbol  "+info.get('symbol', 0))
         return {
             'TickerSymbol' : info.get('symbol', 0),
             'sector' : info.get("sector", 0),

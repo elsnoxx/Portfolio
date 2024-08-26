@@ -1,42 +1,54 @@
 {% extends "base.html" %}
-{% block title %} Home page  {% endblock %}
+{% block title %}Home page{% endblock %}
 {% block content %} 
 <h1>Crypto</h1>
-<div id="BTC_data" class="BTC_data">
-    <p>Loading data...</p>
+
+<form id="myForm" class="row">
+    <label for="crypto_symbol" class="form-label">Zadejte ticker symbol:</label>
+    <div class="col-md-8 d-flex">
+        <input type="text" id="crypto_symbol" name="crypto_symbol" class="form-control me-2" required>
+        <button type="submit" class="btn btn-primary">Odeslat</button>
+    </div>
+</form>
+
+<!-- Spinner (skrytý při načtení stránky) -->
+<div id="loading-spinner" class="d-none mt-3 text-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 </div>
+
+<div id="result_container" class="result_container mt-4">
+    <!-- Výsledky budou načteny sem -->
+</div>
+
 {% endblock %}
+
 {% block scripts %}
 <script>
-    function loadBitcoinData() {
-        fetch('/bitcoinData')
-            .then(response => response.json())  // Parse response as JSON
-            .then(data => {
-                const content = `
-                    <div style="display: flex; justify-content: space-between;">
-                        <div><strong>Ticker:</strong> BTC</div>
-                        <div><strong>Current Price:</strong> $${data.current_price}</div>
-                        <div><strong>High 24h:</strong> $${data.high_24h}</div>
-                        <div><strong>Low 24h:</strong> $${data.low_24h}</div>
-                        <div><strong>Price Change 24h %:</strong> ${data.price_change_percentage_24h}%</div>
-                        <div><strong>ATH Change %:</strong> ${data.ath_change_percentage}%</div>
-                        <div><strong>ATH:</strong> $${data.ath}</div>
-                        <div><strong>Market Cap:</strong> $${data.market_cap}</div>
-                    </div>`;
-                
-                const btcDataElement = document.getElementById('BTC_data');
-                if (btcDataElement) {
-                    btcDataElement.innerHTML = content;
-                } else {
-                    console.error("Element with ID 'BTC_data' not found.");
-                }
-            })
-            .catch(error => {
-                console.error('Error loading Bitcoin data:', error);
-            });
-    }
+document.getElementById('myForm').addEventListener('submit', function (event) {
+    event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
+    document.getElementById('loading-spinner').classList.remove('d-none');
+    
+    const resultDiv = document.getElementById('result_container');  // Opraveno na správný ID
+    resultDiv.innerHTML = '';  // Vymažeme předchozí obsah
 
-    // Load data when the page loads
-    window.onload = loadBitcoinData;
+    const formData = new FormData(this);
+
+    fetch('/bitcoinData', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('loading-spinner').classList.add('d-none');
+            resultDiv.innerHTML = data.html;
+        })
+        .catch(error => {
+            document.getElementById('loading-spinner').classList.add('d-none');
+            resultDiv.innerHTML = 'Neznámý ticker';
+            console.error('Chyba:', error);
+        });
+});
 </script>
 {% endblock %}

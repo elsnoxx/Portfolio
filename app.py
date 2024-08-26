@@ -15,6 +15,9 @@ def feed():
     feed_html = RSSdataroma.get_feed_html()
     return feed_html
 
+@app.route('/stock')
+def stock():
+    return render_template('/financeModels/stock.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -27,6 +30,7 @@ def submit():
     # Získání výsledků Dividend Discount Modelu (DDM)
     DividendDiscountModel = Financial.Dividend_Discount_Model(ticker)
 
+    print(metrics)
     print(metrics)
     common_data = {
                 'TickerSymbol': metrics['TickerSymbol'],
@@ -106,11 +110,25 @@ def portfolio():
 def crypto():
     return render_template('crypto.html')
 
-@app.route('/bitcoinData')
+@app.route('/bitcoinData', methods=['POST'])
 def bitcoinData():
+    ticker_symbol = request.form['crypto_symbol'].upper()
     url = "https://api.coingecko.com/api/v3/coins/bitcoin"
-    data = DataCrypto.bitcoinData(url)
-    return jsonify(data)
+    data = DataCrypto.bitcoinData(url, ticker_symbol)
+
+    DataCrypto.tickerToURL(ticker_symbol)
+
+    rendered_html = render_template('/crypto/infoCryptp.html', 
+                                    symbol=data['symbol'], 
+                                    current_price=data['current_price'], 
+                                    high_24h = data['high_24h'], 
+                                    low_24h = data['low_24h'], 
+                                    price_change_percentage_24h = data['price_change_percentage_24h'],
+                                    ath_change_percentage = data['ath_change_percentage'],
+                                    ath = data['ath'], 
+                                    market_cap = data['market_cap'])
+    return jsonify({'html': rendered_html })
+    # return jsonify(data)
 
 @app.errorhandler(404)
 def page_not_found(e):

@@ -3,24 +3,8 @@
 {% block content %} 
 <div class="row">
     <div class="col-sm-10">
-        <h1>Hello, {{ name }}!</h1>
+        <h1>Hello, on protfolio webpages</h1>
 
-        <form id="myForm" class="row">
-            <label for="ticker_symbol" class="form-label">Zadejte ticker symbol:</label>
-            <div class="col-md-8 d-flex">
-                <input type="text" id="ticker_symbol" name="ticker_symbol" class="form-control me-2" required>
-                <button type="submit" class="btn btn-primary">Odeslat</button>
-            </div>
-        </form>
-
-        <!-- Spinner (skrytý při načtení stránky) -->
-        <div id="loading-spinner" class="d-none mt-3 text-center">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
-        <div id="result" class="mt-3"></div>
     </div>
 
     <div class="col-sm-4">

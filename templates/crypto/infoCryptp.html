@@ -1,0 +1,12 @@
+{% block content %}
+<div style="display: flex; justify-content: space-between;">
+    <div><strong>Ticker:</strong> {{ symbol }}</div>
+    <div><strong>Current Price:</strong> $${{ current_price }}</div>
+    <div><strong>High 24h:</strong> $${{ high_24h }}</div>
+    <div><strong>Low 24h:</strong> $${{ low_24h }}</div>
+    <div><strong>Price Change 24h %:</strong> ${{ price_change_percentage_24h }}%</div>
+    <div><strong>ATH Change %:</strong> ${{ ath_change_percentage }}%</div>
+    <div><strong>ATH:</strong> $${{ ath }}</div>
+    <div><strong>Market Cap:</strong> $${{ market_cap }}</div>
+</div>
+{% endblock %}
