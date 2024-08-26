@@ -1,5 +1,6 @@
 import feedparser
 import re
+import time
 
 def extract_tickers(text):
     pattern = r'<b>(Bought|Added to):</b> ([A-Z\.]+(?:\s[A-Z\.]+)*)<br />'
@@ -32,6 +33,7 @@ def get_feed_html():
         html_output.append(f'<div class="feed_info card">')
         html_output.append(f'<div class="card-body">')
         html_output.append(f'<h3 class="card-title" >{entry.title}</h3>')
+        html_output.append(f'<pp>{time.strftime('%Y-%m-%d %H:%M:%S', entry.published_parsed)}</p>')
         html_output.append(f'<a href="{entry.link}" target="_blank" rel="noopener noreferrer">link</a><br>')
         html_output.append(f'<div class="card-text">')
         tickers = extract_tickers(entry.description)
