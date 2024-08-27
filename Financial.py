@@ -59,12 +59,9 @@ def formatMarketCap(marketCap):
 def calculate_financial_metrics(ticker, ticker_symbol):
     try:
         info = ticker.info
-        f = open("log.txt", "a")
-        f.write(str(info))
         # print(info)
         CashEquivalents = ticker.balance_sheet.loc["Total Assets"].to_list()[0]
         print("Cash Equivalents:", CashEquivalents)
-        f.write(str(CashEquivalents))
         # Použijeme průměrný růst FCF místo růstu zisků
         cashflow = ticker.cashflow
         fcf = cashflow.loc["Free Cash Flow"].dropna().to_list()
@@ -130,7 +127,7 @@ def calculate_financial_metrics(ticker, ticker_symbol):
         fcf.reverse()
         print(f"Free Cash Flow: {fcf}")
         print("tohle je symbol  "+info.get('symbol', 0))
-        f.close()
+
         return {
             'TickerSymbol' : info.get('symbol', 0),
             'sector' : info.get("sector", 0),
