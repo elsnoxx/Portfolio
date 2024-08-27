@@ -1,0 +1,21 @@
+.price-scale {
+    position: relative;
+    width: 100%;       /* Zajistí, že škála zabírá celý dostupný prostor */
+    height: 8px;       /* Menší výška škály */
+    background: #c2c2c2;
+    border-radius: 3px; /* Mírně zaoblené rohy pro subtilnější vzhled */
+    margin: 10px 0;    /* Menší mezera nad a pod škálou */
+}
+
+.price-scale .current-price {
+    position: absolute;
+    width: 8px;          /* Zmenší značku */
+    height: 8px;
+    background: red; /* Značka bude mít modrou barvu */
+    border-radius: 50%;  /* Kompletně kulatá značka */
+    transform: translateX(-50%); /* Centrování značky */
+}
+
+h1 {
+    padding-bottom: 30px;
+}

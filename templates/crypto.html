@@ -1,54 +1,129 @@
 {% extends "base.html" %}
 {% block title %}Home page{% endblock %}
-{% block content %} 
+{% block content %}
+
+<link rel="stylesheet" href="/public/css/cryptoResult.css">
+
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        {
+          "proName": "BITSTAMP:BTCUSD",
+          "title": "Bitcoin"
+        },
+        {
+          "proName": "BITSTAMP:ETHUSD",
+          "title": "Ethereum"
+        },
+        {
+          "description": "Solana",
+          "proName": "COINBASE:SOLUSD"
+        },
+        {
+          "description": "Doge",
+          "proName": "BINANCE:DOGEUSD"
+        },
+        {
+          "description": "Polkadot",
+          "proName": "BINANCE:DOTUSD"
+        }
+      ],
+        "showSymbolLogo": true,
+          "isTransparent": false,
+            "displayMode": "adaptive",
+              "colorTheme": "dark",
+                "locale": "en"
+    }
+  </script>
+</div>
+<!-- TradingView Widget END -->
+
 <h1>Crypto</h1>
 
 <form id="myForm" class="row">
-    <label for="crypto_symbol" class="form-label">Zadejte ticker symbol:</label>
-    <div class="col-md-8 d-flex">
-        <input type="text" id="crypto_symbol" name="crypto_symbol" class="form-control me-2" required>
-        <button type="submit" class="btn btn-primary">Odeslat</button>
-    </div>
+  <label for="crypto_symbol" class="form-label">Zadejte ticker symbol:</label>
+  <div class="col-md-8 d-flex">
+    <input type="text" id="crypto_symbol" name="crypto_symbol" class="form-control me-2" required>
+    <button type="submit" class="btn btn-primary">Odeslat</button>
+  </div>
 </form>
 
 <!-- Spinner (skrytý při načtení stránky) -->
 <div id="loading-spinner" class="d-none mt-3 text-center">
-    <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
 </div>
 
 <div id="result_container" class="result_container mt-4">
-    <!-- Výsledky budou načteny sem -->
+  <!-- Výsledky budou načteny sem -->
 </div>
 
+<div class="container mt-4">
+  <h1>Top 10 Cryptocurrencies by Market Cap</h1>
+  <table style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Market Cap</th>
+        <th>Current Price</th>
+        <th>24h High</th>
+        <th>24h Low</th>
+        <th>Range</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for crypto in cryptos %}
+      <tr>
+        <td><img src="{{ crypto.image }}" alt="{{ crypto.name }}" style="width: 32px;"></td>
+        <td><a href="{{ url_for('crypto_detail', crypto_id=crypto.id) }}">{{ crypto.name }}</a></td>
+        <td>{{ crypto.market_cap }}</td>
+        <td>{{ crypto.price }}</td>
+        <td>{{ crypto.high_24h }}</td>
+        <td>{{ crypto.low_24h }}</td>
+        <td>
+          <div class="price-scale">
+            <div class="current-price"
+              style="left: calc(({{crypto.price_int}} - {{crypto.low_24h_int}}) / ({{crypto.high_24h_int}} - {{crypto.low_24h_int}}) * 100%)">
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-document.getElementById('myForm').addEventListener('submit', function (event) {
+  document.getElementById('myForm').addEventListener('submit', function (event) {
     event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
     document.getElementById('loading-spinner').classList.remove('d-none');
-    
+
     const resultDiv = document.getElementById('result_container');  // Opraveno na správný ID
     resultDiv.innerHTML = '';  // Vymažeme předchozí obsah
 
     const formData = new FormData(this);
 
     fetch('/bitcoinData', {
-        method: 'POST',
-        body: formData
+      method: 'POST',
+      body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loading-spinner').classList.add('d-none');
-            resultDiv.innerHTML = data.html;
-        })
-        .catch(error => {
-            document.getElementById('loading-spinner').classList.add('d-none');
-            resultDiv.innerHTML = 'Neznámý ticker';
-            console.error('Chyba:', error);
-        });
-});
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('loading-spinner').classList.add('d-none');
+        resultDiv.innerHTML = data.html;
+      })
+      .catch(error => {
+        document.getElementById('loading-spinner').classList.add('d-none');
+        resultDiv.innerHTML = 'Neznámý ticker';
+        console.error('Chyba:', error);
+      });
+  });
 </script>
 {% endblock %}

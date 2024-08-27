@@ -100,11 +100,6 @@ def submit():
             
         
             return jsonify({'html': rendered_html })
-        
-
-
-
-
 
 @app.route('/portfolio')
 def portfolio():
@@ -112,7 +107,21 @@ def portfolio():
 
 @app.route('/crypto')
 def crypto():
-    return render_template('crypto.html')
+    top_10_cryptos = DataCrypto.get_top_10_cryptos()
+    # print(top_10_cryptos)
+    return render_template('crypto.html', cryptos=top_10_cryptos)
+
+@app.route('/crypto/<crypto_id>')
+def crypto_detail(crypto_id):
+    print(crypto_id)
+    # Získání detailů o kryptoměně z API
+    crypto_data = DataCrypto.get_crypto_details(crypto_id)
+    if (crypto_data == 1):
+        return render_template('/general/toomanyrequests.html')
+    if (crypto_data == 2):
+        return render_template('/general/notfound.html')
+    else:
+        return render_template('/crypto/infoCrypto.html', crypto=crypto_data)
 
 @app.route('/bitcoinData', methods=['POST'])
 def bitcoinData():
@@ -120,7 +129,7 @@ def bitcoinData():
     url = "https://api.coingecko.com/api/v3/coins/bitcoin"
     data = DataCrypto.bitcoinData(url, ticker_symbol)
 
-    rendered_html = render_template('/crypto/infoCryptp.html', 
+    rendered_html = render_template('/crypto/infoCrypto.html', 
                                     symbol=data['symbol'], 
                                     current_price=data['current_price'], 
                                     high_24h = data['high_24h'], 
