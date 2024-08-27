@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="/public/css/cryptoInfo.css">
+
+<div class="crypto-detail">
+    <!-- Základní informace -->
+    <section class="basic-info">
+      <div class="row">
+          <div class="col-0">
+            <img src="{{ crypto.image }}" alt="{{ crypto.name }} logo" class="crypto-logo">
+          </div>
+          <div class="col-6">
+            <h1>{{ crypto.name }}</h1>
+          </div>
+      </div>
+  </section>
+    <section class="basic-info">    
+      
+    </section>
+  
+    <!-- Tržní údaje -->
+    <section class="market-data">
+      <h2>Tržní údaje</h2>
+      <div class="row">
+          <div class="col-3">
+              <ul>
+                <li><strong>Market Cap:</strong> ${{ crypto.market_cap }}</li>
+                <li><strong>Aktuální cena:</strong> ${{ crypto.current_price }}</li>
+                <li><strong>Maximální cena (24h):</strong> ${{ crypto.high_24h }}</li>
+                <li><strong>Minimální cena (24h):</strong> ${{ crypto.low_24h }}</li>
+              </ul>
+          </div>
+          <div class="col-6">
+              <ul>
+                <li><strong>Cirkulující zásoba:</strong> {{ crypto.circulating_supply }}</li>
+                <li><strong>Celková zásoba:</strong> {{ crypto.total_supply }}</li>
+                <li><strong>Objem obchodování (24h):</strong> ${{ crypto.trading_volume_24h }}</li>
+              </ul>
+          </div>
+      </div>
+  </section>  
+    <!-- Technické detaily -->
+    <section class="technical-details">
+      <h2>Technické detaily</h2>
+      <ul>
+        <li><strong>Blockchain:</strong> {{ crypto.blockchain }}</li>
+        <li><strong>Algoritmus:</strong> {{ crypto.algorithm }}</li>
+        <li><strong>Podpora Smart Contracts:</strong> {{ crypto.smart_contracts }}</li>
+        <li><strong>Token Standard:</strong> {{ crypto.token_standard }}</li>
+      </ul>
+    </section>
+  
+    <!-- Historie a vývoj -->
+    <section class="history-development">
+      <h2>Historie a vývoj</h2>
+      <p><strong>Rok spuštění:</strong> {{ crypto.launch_year }}</p>
+      <p><strong>Tvůrci:</strong> {{ crypto.creators }}</p>
+      <p>{{ crypto.description }}</p>
+      <p><strong>Roadmap:</strong> <a href="{{ crypto.roadmap_link }}" target="_blank">Zobrazit roadmap</a></p>
+    </section>
+  
+    <!-- Použití a funkce -->
+    <section class="use-cases">
+      <h2>Použití a funkce</h2>
+      <p>{{ crypto.use_cases }}</p>
+      <p><strong>Partnerské projekty:</strong> {{ crypto.partners }}</p>
+    </section>
+  
+    <!-- Regulační status -->
+    <section class="regulatory-status">
+      <h2>Regulační status</h2>
+      <p><strong>Právní postavení:</strong> {{ crypto.legal_status }}</p>
+      <p><strong>Omezení a regulace:</strong> {{ crypto.regulations }}</p>
+    </section>
+  
+    <!-- Komunita a podpora -->
+    <section class="community-support">
+      <h2>Komunita a podpora</h2>
+      <ul>
+        <li><strong>Sociální média:</strong> <a href="{{ crypto.twitter_link }}" target="_blank">X</a>, <a href="{{ crypto.reddit_link }}" target="_blank">Reddit</a>, <a href="{{ crypto.telegram_link }}" target="_blank">Telegram</a></li>
+        <li><strong>Otevřený zdroj:</strong> <a href="{{ crypto.open_source }}" target="_blank">Github</a></li>
+        <li><strong>Whitepaper:</strong> <a href="{{ crypto.whitepaper }}" target="_blank">Whitepaper</a></li>
+        <li><strong>Dokumentace:</strong> <a href="{{ crypto.documentation_link }}" target="_blank">Zobrazit dokumentaci</a></li>
+      </ul>
+    </section>
+  
+    <!-- Bezpečnost -->
+    <section class="security">
+      <h2>Bezpečnost</h2>
+      <p><strong>Historie bezpečnostních incidentů:</strong> {{ crypto.security_incidents }}</p>
+      <p><strong>Audit kódu:</strong> {{ crypto.code_audit }}</p>
+    </section>
+  
+    <!-- Ekonomické modely -->
+    <section class="economic-models">
+      <h2>Ekonomické modely</h2>
+      <ul>
+        <li><strong>Inflační/deflační model:</strong> {{ crypto.inflation_model }}</li>
+        <li><strong>Staking a odměny:</strong> {{ crypto.staking_rewards }}</li>
+      </ul>
+    </section>
+  
+    <!-- Porovnání s konkurencí -->
+    <section class="competition">
+      <h2>Porovnání s konkurencí</h2>
+      <p>{{ crypto.comparison_with_competitors }}</p>
+    </section>
+  </div>
+  
+{% endblock %}
