@@ -1,3 +1,4 @@
 .container {
     padding-top: 60px; /* Výška navigační lišty, lze upravit podle potřeby */
+    max-width: 90%;
 }
