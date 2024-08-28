@@ -1,10 +1,14 @@
 from flask import Flask, request, jsonify, render_template
+from flask_apscheduler import APScheduler
+from Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
+import threading
 import RSSdataroma
 import Financial
 import DataCrypto
 
 app = Flask(__name__, static_folder='public')
+scheduler = APScheduler()
 
 @app.route('/')
 def home():
@@ -145,6 +149,20 @@ def bitcoinData():
 def page_not_found(e):
     return render_template('404.html')
 
+
+def run_initial_job():
+    # Tato funkce se spustí v samostatném vlákně
+    deleteLogs()
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    scheduler.add_job(func=logCpuUsage, trigger='interval', seconds=5, id='cpujob')
+    scheduler.add_job(func=logRamUsage, trigger='interval', seconds=5, id='ramjob')
+    scheduler.add_job(func=deleteLogs, trigger='cron', hour=2, minute=0, id='logDelete')
+
+    # Spuštění úlohy při startu aplikace v samostatném vlákně
+    threading.Thread(target=run_initial_job).start()
+
+    scheduler.start()
+    app.run(host="0.0.0.0", port=5000, debug=False)
     # app.run(debug=True)
