@@ -1,0 +1,32 @@
+<table style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Market Cap</th>
+            <th>Current Price</th>
+            <th>24h High</th>
+            <th>24h Low</th>
+            <th>Range</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for crypto in cryptos %}
+        <tr>
+            <td><img src="{{ crypto.image }}" alt="{{ crypto.name }}" style="width: 32px;"></td>
+            <td><a href="{{ url_for('crypto_detail', crypto_id=crypto.id) }}">{{ crypto.name }}</a></td>
+            <td>{{ crypto.market_cap }}</td>
+            <td>{{ crypto.price }}</td>
+            <td>{{ crypto.high_24h }}</td>
+            <td>{{ crypto.low_24h }}</td>
+            <td>
+                <div class="price-scale">
+                    <div class="current-price"
+                        style="left: calc(({{crypto.price_int}} - {{crypto.low_24h_int}}) / ({{crypto.high_24h_int}} - {{crypto.low_24h_int}}) * 100%)">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -8,22 +8,21 @@ def ensure_directory_exists(path):
 
 def logRamUsage():
     # Získání absolutní cesty pro složku
-    base_path = os.path.abspath(os.path.dirname(__file__))
+    base_path = os.path.abspath(os.path.dirname('logs'))
     folder_path = os.path.join(base_path, 'logs', 'ram')
     nameOfFile = os.path.join(folder_path, 'LogRam-' + str(dt.datetime.now().date()) + '.txt')
-    
     # Vytvoření složky, pokud neexistuje
     ensure_directory_exists(folder_path)
     
     # Získání a zapsání zprávy
     message = f'RAM usage {dt.datetime.now()}: {psutil.virtual_memory().percent} %'
-    print(message)
+
     with open(nameOfFile, 'a+') as f:
         f.write(message + '\n')
 
 def logCpuUsage():
     # Získání absolutní cesty pro složku
-    base_path = os.path.abspath(os.path.dirname(__file__))
+    base_path = os.path.abspath(os.path.dirname('logs'))
     folder_path = os.path.join(base_path, 'logs', 'cpu')
     nameOfFile = os.path.join(folder_path, 'LogCPU-' + str(dt.datetime.now().date()) + '.txt')
     
@@ -32,14 +31,14 @@ def logCpuUsage():
     
     # Získání a zapsání zprávy
     message = f'CPU usage {dt.datetime.now()}: {psutil.cpu_percent()} %'
-    print(message)
+
     with open(nameOfFile, 'a+') as f:
         f.write(message + '\n')
 
 
 def deleteLogs():
     # Získání absolutní cesty pro složku
-    base_path = os.path.abspath(os.path.dirname(__file__))
+    base_path = os.path.abspath(os.path.dirname('logs'))
     folder_path = os.path.join(base_path, 'logs', 'FileDelete')
     nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
     
@@ -48,7 +47,7 @@ def deleteLogs():
     
     with open(nameOfFile, 'a+') as f:
         base_path = os.path.abspath(os.path.dirname(__file__))
-        logs_folders = ['ram', 'cpu', 'fileDelete']
+        logs_folders = ['ram', 'cpu', 'fileDelete', 'http_requests']
         for path in logs_folders:
             folder_path = os.path.join(base_path, 'logs', path)
 

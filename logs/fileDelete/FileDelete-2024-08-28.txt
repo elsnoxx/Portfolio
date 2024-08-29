@@ -1,3 +1,0 @@
-Deleted: c:\Users\admin\Documents\GitHub\Portfolio\logs\ram\LogRam-2024-08-24.txt
-Deleted: c:\Users\admin\Documents\GitHub\Portfolio\logs\cpu\LogCPU-2024-08-24.txt
-Deleted: c:\Users\admin\Documents\GitHub\Portfolio\logs\fileDelete\FileDelete-2024-08-24.txt

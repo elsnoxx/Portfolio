@@ -1,15 +1,28 @@
 from flask import Flask, request, jsonify, render_template
+import logging
 from flask_apscheduler import APScheduler
-from Utils import logCpuUsage, logRamUsage, deleteLogs
+from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
 import threading
-import RSSdataroma
-import Financial
-import DataCrypto
-from ProtfolioFromExcel import portfolioTickers
+from src.RSSdataroma import get_feed_html
+from src.Financial import calculate_financial_metrics, Dividend_Discount_Model 
+from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
+from src.ProtfolioFromExcel import portfolioTickers
+from src.AppLogger import setup_request_logger
+import datetime as dt
 
 app = Flask(__name__, static_folder='public')
 scheduler = APScheduler()
+
+# Vytvoření loggeru při startu aplikace
+request_logger = setup_request_logger()
+
+
+@app.before_request
+def log_request_info():
+    log_message = f'{request.remote_addr} - - [{dt.datetime.now().strftime("%d/%b/%Y %H:%M:%S")}] "{request.method} {request.path} HTTP/1.1"'
+    request_logger.info(log_message)
+
 
 @app.route('/')
 def home():
@@ -17,7 +30,7 @@ def home():
 
 @app.route('/feed')
 def feed():
-    feed_html = RSSdataroma.get_feed_html()
+    feed_html = get_feed_html()
     return feed_html
 
 @app.route('/stock')
@@ -30,10 +43,10 @@ def submit():
     ticker = yf.Ticker(ticker_symbol.upper())
     
     # Získání finančních metrik
-    metrics = Financial.calculate_financial_metrics(ticker, ticker_symbol)
+    metrics = calculate_financial_metrics(ticker, ticker_symbol)
 
     # Získání výsledků Dividend Discount Modelu (DDM)
-    DividendDiscountModel = Financial.Dividend_Discount_Model(ticker)
+    DividendDiscountModel = Dividend_Discount_Model(ticker)
 
     print(metrics)
     print(metrics)
@@ -113,15 +126,16 @@ def portfolio():
 
 @app.route('/crypto')
 def crypto():
-    top_10_cryptos = DataCrypto.get_top_10_cryptos()
+    # top_10_cryptos = DataCrypto.get_top_10_cryptos()
     # print(top_10_cryptos)
-    return render_template('crypto.html', cryptos=top_10_cryptos)
+    # return render_template('crypto.html', cryptos=top_10_cryptos)
+    return render_template('crypto.html')
 
 @app.route('/crypto/<crypto_id>')
 def crypto_detail(crypto_id):
     print(crypto_id)
     # Získání detailů o kryptoměně z API
-    crypto_data = DataCrypto.get_crypto_details(crypto_id)
+    crypto_data = get_crypto_details(crypto_id)
     if (crypto_data == 1):
         return render_template('/general/toomanyrequests.html')
     if (crypto_data == 2):
@@ -133,7 +147,7 @@ def crypto_detail(crypto_id):
 def bitcoinData():
     ticker_symbol = request.form['crypto_symbol'].upper()
     url = "https://api.coingecko.com/api/v3/coins/bitcoin"
-    data = DataCrypto.bitcoinData(url, ticker_symbol)
+    data = bitcoinData(url, ticker_symbol)
 
     rendered_html = render_template('/crypto/infoCrypto.html', 
                                     symbol=data['symbol'], 
@@ -146,6 +160,17 @@ def bitcoinData():
                                     market_cap = data['market_cap'])
     return jsonify({'html': rendered_html })
     # return jsonify(data)
+
+@app.route('/bitcoinDataOverview/<btn_id>', methods=['POST'])
+def bitcoinDataOverviewPOST(btn_id):
+    top_10_cryptos = get_top_10_cryptos(btn_id)
+    return render_template('/crypto/dashboard.html', cryptos=top_10_cryptos)
+
+
+@app.route('/crypto/bitcoinDataOverview/<btn_id>', methods=['GET'])
+def bitcoinDataOverviewGET(btn_id):
+    top_10_cryptos = get_top_10_cryptos(btn_id)
+    return render_template('/crypto/dashboard.html', cryptos=top_10_cryptos)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -166,5 +191,5 @@ if __name__ == '__main__':
     threading.Thread(target=run_initial_job).start()
 
     scheduler.start()
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=True)
     # app.run(debug=True)
