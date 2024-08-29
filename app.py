@@ -6,6 +6,7 @@ import threading
 import RSSdataroma
 import Financial
 import DataCrypto
+from ProtfolioFromExcel import portfolioTickers
 
 app = Flask(__name__, static_folder='public')
 scheduler = APScheduler()
@@ -107,7 +108,8 @@ def submit():
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template('portfolio.html')
+    data = portfolioTickers()
+    return render_template('portfolio.html', data=data)
 
 @app.route('/crypto')
 def crypto():
