@@ -53,12 +53,16 @@ def formatMarketCap(marketCap):
     else:
         return str(marketCap)
 
-
+def getNews( ticker ):
+    news = ticker.news
+    print(news)
+    return news
 
 
 def calculate_financial_metrics(ticker, ticker_symbol):
     try:
         info = ticker.info
+        print(info)
         # print(info)
         CashEquivalents = ticker.balance_sheet.loc["Total Assets"].to_list()[0]
         print("Cash Equivalents:", CashEquivalents)
@@ -181,7 +185,7 @@ def Dividend_Discount_Model(ticker):
     stock_grp["div_PCT_Change"] = stock_grp["div_adj"].pct_change(fill_method=None)
     
     median_growth = stock_grp["div_PCT_Change"].median()
-    lst_Div = stock_grp.at[2021,'Dividends']
+    lst_Div = stock_grp.at[2023,'Dividends']
     exp_future_div = round(lst_Div * (1 + median_growth), 2)
     risk_free_rate = 0.03
     mkt_return = .11
