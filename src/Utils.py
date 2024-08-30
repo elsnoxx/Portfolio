@@ -46,7 +46,7 @@ def deleteLogs():
     ensure_directory_exists(folder_path)
     
     with open(nameOfFile, 'a+') as f:
-        base_path = os.path.abspath(os.path.dirname(__file__))
+        base_path = os.path.abspath(os.path.dirname('logs'))
         logs_folders = ['ram', 'cpu', 'fileDelete', 'http_requests']
         for path in logs_folders:
             folder_path = os.path.join(base_path, 'logs', path)
