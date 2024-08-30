@@ -5,7 +5,7 @@ from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
 import threading
 from src.RSSdataroma import get_feed_html
-from src.Financial import calculate_financial_metrics, Dividend_Discount_Model 
+from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, getNews
 from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
 from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
@@ -41,7 +41,7 @@ def stock():
 def submit():
     ticker_symbol = request.form['ticker_symbol'].upper()
     ticker = yf.Ticker(ticker_symbol.upper())
-    
+    getNews( ticker )
     # Získání finančních metrik
     metrics = calculate_financial_metrics(ticker, ticker_symbol)
 
@@ -122,7 +122,24 @@ def submit():
 @app.route('/portfolio')
 def portfolio():
     data = portfolioTickers()
+    
     return render_template('portfolio.html', data=data)
+
+@app.route('/basicData', methods=['POST'])
+def basicData():
+    html_output = render_template('/financeModels/basicData.html')
+    return jsonify({'html': html_output})
+
+
+@app.route('/dcf', methods=['POST'])
+def dcf():
+    html_output = render_template('/financeModels/basicData.html')
+    return jsonify({'html': html_output})
+
+@app.route('/income', methods=['POST'])
+def income():
+    html_output = render_template('/financeModels/basicData.html')
+    return jsonify({'html': html_output})
 
 @app.route('/crypto')
 def crypto():
