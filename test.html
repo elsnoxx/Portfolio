@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home page</title>
+    <title> Home page  </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/css/banner.css">
     <link rel="stylesheet" href="/public/css/spinner.css">
@@ -14,8 +11,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">Fixed navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -43,130 +39,247 @@
     </nav>
 
     <main role="main" class="container">
+         
+<div class="row">
+    <div class="col-sm-10">
+        <h1>Hello, !</h1>
 
-        <p><strong>Rok spuštění:</strong> 2009-01-03</p>
-        <p><strong>Tvůrci:</strong> </p>
+        <form id="myForm" class="row">
+            <label for="ticker_symbol" class="form-label">Zadejte ticker symbol:</label>
+            <div class="col-md-8 d-flex">
+                <input type="text" id="ticker_symbol" name="ticker_symbol" class="form-control me-2" required="">
+                <button type="submit" class="btn btn-primary">Odeslat</button>
+            </div>
+        </form>
 
-
-        <div class="crypto-detail">
-            <!-- Základní informace -->
-            <section class="basic-info">
-                <div class="row">
-                    <div class="col-0">
-                        <img src="https://coin-images.coingecko.com/coins/images/1/small/bitcoin.png?1696501400"
-                            alt="Bitcoin logo" class="crypto-logo">
-                    </div>
-                    <div class="col-6">
-                        <h1>Bitcoin (btc)</h1>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Tržní údaje -->
-            <section class="market-data">
-                <h2>Tržní údaje</h2>
-                <div class="row">
-                    <div class="col-3">
-                        <ul>
-                            <li><strong>Market Cap:</strong> $1.24 T</li>
-                            <li><strong>Aktuální cena:</strong> $</li>
-                            <li><strong>Maximální cena (24h):</strong> $$64,000</li>
-                            <li><strong>Minimální cena (24h):</strong> $$62,693</li>
-                        </ul>
-                    </div>
-                    <div class="col-6">
-                        <ul>
-                            <li><strong>Cirkulující zásoba:</strong> </li>
-                            <li><strong>Celková zásoba:</strong> </li>
-                            <li><strong>Objem obchodování (24h):</strong> $</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Technické detaily -->
-            <section class="technical-details">
-                <h2>Technické detaily</h2>
-                <ul>
-                    <li><strong>Blockchain:</strong> </li>
-                    <li><strong>Algoritmus:</strong> SHA-256</li>
-                    <li><strong>Podpora Smart Contracts:</strong> </li>
-                    <li><strong>Token Standard:</strong> </li>
-                </ul>
-            </section>
-
-            <!-- Historie a vývoj -->
-            <section class="history-development">
-                <h2>Historie a vývoj</h2>
-                <p></p>
-                <p><strong>Roadmap:</strong> <a href="" target="_blank">Zobrazit roadmap</a></p>
-            </section>
-
-            <!-- Použití a funkce -->
-            <section class="use-cases">
-                <h2>Použití a funkce</h2>
-                <p></p>
-                <p><strong>Partnerské projekty:</strong> </p>
-            </section>
-
-            <!-- Regulační status -->
-            <section class="regulatory-status">
-                <h2>Regulační status</h2>
-                <p><strong>Právní postavení:</strong> </p>
-                <p><strong>Omezení a regulace:</strong> </p>
-            </section>
-
-            <!-- Komunita a podpora -->
-            <section class="community-support">
-                <h2>Komunita a podpora</h2>
-                <ul>
-                    <li><strong>Sociální média:</strong> <a href="https://x.com/bitcoin" target="_blank">X</a>, <a
-                            href="https://www.reddit.com/r/Bitcoin/" target="_blank">Reddit</a>, <a href=""
-                            target="_blank">Telegram</a></li>
-                    <li><strong>Otevřený zdroj:</strong> <a href="https://github.com/bitcoin/bitcoin"
-                            target="_blank">Github</a></li>
-                    <li><strong>Whitepaper:</strong> <a href="https://bitcoin.org/bitcoin.pdf"
-                            target="_blank">Whitepaper</a></li>
-                    <li><strong>Dokumentace:</strong> <a href="" target="_blank">Zobrazit dokumentaci</a></li>
-                </ul>
-            </section>
-
-            <!-- Bezpečnost -->
-            <section class="security">
-                <h2>Bezpečnost</h2>
-                <p><strong>Historie bezpečnostních incidentů:</strong> </p>
-                <p><strong>Audit kódu:</strong> </p>
-            </section>
-
-            <!-- Ekonomické modely -->
-            <section class="economic-models">
-                <h2>Ekonomické modely</h2>
-                <ul>
-                    <li><strong>Inflační/deflační model:</strong> </li>
-                    <li><strong>Staking a odměny:</strong> </li>
-                </ul>
-            </section>
-
-            <!-- Porovnání s konkurencí -->
-            <section class="competition">
-                <h2>Porovnání s konkurencí</h2>
-                <p></p>
-            </section>
+        <!-- Spinner (skrytý při načtení stránky) -->
+        <div id="loading-spinner" class="mt-3 text-center d-none">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
 
+        <div id="result" class="mt-3"><link rel="stylesheet" href="/public/css/stockResult.css">
+
+<div class="containerResult mt-5">
+    <!-- Základní údaje o společnosti -->
+    <div class="section ">
+        <h2>Základní údaje o společnosti DIS</h2>
+        <div class="data-row">
+            <span class="label">Název společnosti:</span>
+            <span class="value">The Walt Disney Company</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Ticker (symbol):</span>
+            <span class="value">DIS</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Tržní kapitalizace:</span>
+            <span class="value">162.88 B</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Odvětví:</span>
+            <span class="value">Communication Services</span>
+        </div>
+    </div>
+    <!-- 52 Týdenní Cenová Stupnice -->
+    <div class="section mt-4">
+        <h2>52 Týdenní Cenová Stupnice</h2>
+        <div class="price-scale">
+            <div class="current-price" style="left: calc((89.81 - 78.73) / (123.74 - 78.73) * 100%)"></div>
+        </div>
+        <div class="labels row">
+            <div class="col-md-4"><strong>52 týdenní minimum:</strong> <span class="value"> $78.73 </span></div>
+            <div class="col-md-4"><strong>Aktuální cena:</strong> <span class="value">$89.81</span></div>
+            <div class="col-md-4"><strong>52 týdenní maximum:</strong> <span class="value"> $123.74 </span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Shrnutí a doporučení</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="data-row">
+                    <span class="label">Doporučení:</span>
+                    <span class="value"> <span class="value"></span>buy</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Počet analytických doporučení:</span>
+                    <span class="value"><span class="value"></span>27</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Cílová vysoká cena:</span>
+                    <span class="value">142.0 $</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Průměrná cílová cena:</span>
+                    <span class="value">111.08 $</span>
+                </div>
+                <div class="data-row">
+                    <span class="label">Cílová nízká cena:</span>
+                    <span class="value">63.0 $</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="tradingview-widget-container" style="padding-top: 5px;">
+                    <div id="tradingview_22f33">
+                        <div id="tradingview_28fbb-wrapper " style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 620px; height: calc(268px);">
+                            <iframe title="advanced chart TradingView widget" lang="en" id="tradingview_28fbb" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="https://s.tradingview.com/widgetembed/?hideideas=1&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;locale=en#%7B%22symbol%22%3A%22DIS%22%2C%22frameElementId%22%3A%22tradingview_28fbb%22%2C%22interval%22%3A%221%22%2C%22range%22%3A%2212M%22%2C%22hide_top_toolbar%22%3A%221%22%2C%22save_image%22%3A%220%22%2C%22studies%22%3A%22%5B%5D%22%2C%22theme%22%3A%22light%22%2C%22style%22%3A%222%22%2C%22timezone%22%3A%22America%2FNew_York%22%2C%22withdateranges%22%3A%221%22%2C%22studies_overrides%22%3A%22%7B%7D%22%2C%22utm_source%22%3A%22www.dataroma.com%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22chart%22%2C%22utm_term%22%3A%22DIS%22%2C%22page-uri%22%3A%22www.dataroma.com%2Fm%2Fstock.php%3Fsym%3DDIS%22%7D" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div>
+                        </div>
+                        <div class="tradingview-widget-copyright" style="width: 100%;">
+                            <a href="https://www.tradingview.com/symbols/DIS/?utm_source=www.dataroma.com&amp;utm_medium=widget_new&amp;utm_campaign=chart&amp;utm_term=DIS" rel="noopener" target="_blank"><span class="blue-text">DIS Chart</span></a> by TradingView
+                        </div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                        <script type="text/javascript">
+                            new TradingView.widget(
+                                {
+                                    "width": 620,
+                                    "height": 300,
+                                    "symbol": "DIS",
+                                    "timezone": "America/New_York",
+                                    "theme": "light",
+                                    "style": "2",
+                                    "locale": "en",
+                                    "toolbar_bg": "#f1f3f6",
+                                    "enable_publishing": false,
+                                    "hide_top_toolbar": true,
+                                    "withdateranges": true,
+                                    "range": "12M",
+                                    "save_image": false,
+                                    "container_id": "tradingview_22f33"
+                                }
+                            );
+                        </script>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+
+
+    
+
+
+    <!-- Další Finanční Ukazatele -->
+    <div class="section mt-4">
+        <h2>Další Finanční Ukazatele</h2>
+        <div class="data-row">
+            <span class="label">Poslední Dividenda:</span>
+            <span class="value">$</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Mediánový Růst Dividend:</span>
+            <span class="value">%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Náklady Vlastního Kapitálu (COE):</span>
+            <span class="value">%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Odhad Budoucí Dividend:</span>
+            <span class="value">$</span>
+        </div>
+    </div>
+
+    
+
+<div class="containerResult mt-5">
+    <!-- DCF Výpočet -->
+    <div class="section mt-5">
+        <h2>DCF Výpočet pro </h2>
+        <div class="data-row">
+            <span class="label">DCF Cena na Akcii:</span>
+            <span class="value">$11461.154237443672</span>
+        </div>
+        <div class="data-row">
+            <h3>Free Cash Flow</h3>
+            <ul class="list-group list-group-flush">
+                
+            </ul>
+        </div>
+
+        <!-- Podrobnosti DCF Výpočtu -->
+        <div class="section mt-4">
+            <h3>Podrobnosti DCF Výpočtu</h3>
+            <div class="data-row">
+                <span class="label">Terminal Value:</span>
+                <span class="value">$39604018298104.78</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Součet FCF:</span>
+                <span class="value">$20627839898911.938</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Hodnota Vlastního Kapitálu:</span>
+                <span class="value">$20785834896863.938</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Počet Vydaných Akcií:</span>
+                <span class="value">1813590016</span>
+            </div>
+            <div class="data-row">
+                <span class="label">DCF Cena na Akcii:</span>
+                <span class="value">$11461.154237443672</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Růst Tržeb a Zisků -->
+    <div class="section mt-4">
+        <h2>Růst Tržeb a Zisků</h2>
+        <div class="data-row">
+            <span class="label">Růst Tržeb:</span>
+            <span class="value">3.6999999999999997%</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Růst Zisků:</span>
+            <span class="value">N/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/AN/A%</span>
+        </div>
+    </div>
+
+    <!-- Závěrečný Výstup -->
+    <div class="section mt-4">
+        <h2>Závěrečný Výstup</h2>
+        <div class="data-row">
+            <span class="label">DCF Cena na Akcii:</span>
+            <span class="value">$11461.154237443672</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Aktuální Cena:</span>
+            <span class="value">$89.81</span>
+        </div>
+        <div class="data-row">
+            <span class="label">Sleva na DCF Hodnotu:</span>
+            <span class="value">0.9921639655012591%</span>
+        </div>
+    </div>
+</div>
+
+<!-- Historie a Odhady Dividend -->
+    <div class="section mt-4">
+        <h2>Historie a Odhady Dividend</h2>
+        <div class="card my-4">
+            <div class="card-body">
+                <h3 class="card-title">Historie Dividend</h3>
+                
+                <ul class="list-group list-group-flush">
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div></div>
+    </div>
+</div>
+
+<script src="./public/js/tickerData.js"></script>
 
     </main>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-</body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-</html>
+
+</body></html>

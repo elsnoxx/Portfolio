@@ -1,22 +1,76 @@
+// document.getElementById('myForm').addEventListener('submit', function (event) {
+//     event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
+//     document.getElementById('loading-spinner').classList.remove('d-none');
+//     const resultDiv = document.getElementById('result');
+//     resultDiv.innerHTML = ` `;
+
+//     const formData = new FormData(this);
+
+//     fetch('/submit', {
+//         method: 'POST',
+//         body: formData
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             document.getElementById('loading-spinner').classList.add('d-none');
+//             resultDiv.innerHTML = data.html;
+//         })
+//         .catch(error => {
+//             resultDiv.innerHTML = ` Neznami ticker `;
+//             console.error('Chyba:', error);
+//         });
+// });
+
+
 document.getElementById('myForm').addEventListener('submit', function (event) {
     event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
-    document.getElementById('loading-spinner').classList.remove('d-none');
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = ` `;
+
+    // Resetování výsledků a zobrazení spinnerů
+    document.getElementById('spinner-api1').classList.remove('d-none');
+    document.getElementById('spinner-api2').classList.remove('d-none');
+    document.getElementById('spinner-api3').classList.remove('d-none');
+    const resultApi1 = document.getElementById('result-api1');
+    const resultApi2 = document.getElementById('result-api2');
+    const resultApi3 = document.getElementById('result-api3');
+    resultApi1.innerHTML = ``;
+    resultApi2.innerHTML = ``;
+    resultApi3.innerHTML = ``;
 
     const formData = new FormData(this);
 
-    fetch('/submit', {
+    // Volání prvního API
+    fetch('/basicData', {
         method: 'POST',
         body: formData
     })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('loading-spinner').classList.add('d-none');
-            resultDiv.innerHTML = data.html;
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('spinner-api1').classList.add('d-none');
+        resultApi1.innerHTML = data.html;
+        
+    }).then(
+        fetch('/dcf', {
+            method: 'POST',
+            body: formData
         })
-        .catch(error => {
-            resultDiv.innerHTML = ` Neznami ticker `;
-            console.error('Chyba:', error);
+    
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('spinner-api2').classList.add('d-none');
+        resultApi2.innerHTML = data.html;
+        
+        // Volání třetího API
+        return fetch('/income', {
+            method: 'POST',
+            body: formData
         });
+    }))
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('spinner-api3').classList.add('d-none');
+        resultApi3.innerHTML = data.html;
+    })
+    .catch(error => {
+        console.error('Chyba:', error);
+    });
 });
