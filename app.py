@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template
-import logging
 from flask_apscheduler import APScheduler
 from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
@@ -9,6 +8,7 @@ from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, 
 from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
 from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
+from src.HWmonitoring import get_CPU_usage, get_RAM_usage
 import datetime as dt
 
 app = Flask(__name__, static_folder='public')
@@ -27,6 +27,18 @@ def log_request_info():
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/hwmonitoring')
+def hwmonitoring():
+    return render_template('/hwmonitoring/hwmonitoring.html')
+
+@app.route('/api/cpu-usage', methods=['POST'])
+def cpu_usage():
+    return jsonify(get_CPU_usage())
+
+@app.route('/api/ram-usage', methods=['POST'])
+def ram_usage():
+    return jsonify(get_RAM_usage())
 
 @app.route('/feed')
 def feed():
@@ -209,4 +221,3 @@ if __name__ == '__main__':
 
     scheduler.start()
     app.run(host="0.0.0.0", port=5000, debug=True)
-    # app.run(debug=True)
