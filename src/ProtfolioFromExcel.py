@@ -1,5 +1,7 @@
 import pandas as pd
-
+import yfinance as yf
+import os
+from datetime import datetime, timedelta
 
 
 
@@ -53,21 +55,53 @@ def portfolioTickers():
             # print(f"Hodnota ve sloupci 'Amount': {row["Amount"]}")
             
         
-    print("\n\n")
-    print(types)
-
-    print("\n\n")
     for tic in list(tickers.keys()):
         if tickers[tic] == 0:
             tickers.pop(tic)
 
-    
-
-    print("\n\n")
     for tic in list(dividends.keys()):
         if tic not in tickers:
             dividends.pop(tic)
 
-    print(dividends)
-    print(tickers)
+    for tic in list(tickers):
+        tickers[tic] = f'{tickers[tic]:.2f}'
+
     return tickers
+
+
+def PortfolioFile():
+    # Získání dnešního data
+    today = datetime.now()
+    
+    # Vypočítání data před rokem
+    one_year_ago = today - timedelta(days=365)
+    
+    # Formátování data do řetězce ve formátu YYYY-MM-DD
+    end_date = today.strftime('%Y-%m-%d')
+    start_date = one_year_ago.strftime('%Y-%m-%d')
+
+    portfolio = portfolioTickers()
+    data = yf.download(list(portfolio), start=start_date, end=end_date)
+
+    # Určení cesty k adresáři pro uložení dat
+    base_path = os.path.abspath(os.path.dirname('public'))
+    folder_path = os.path.join(base_path, 'public', 'stock-data')
+
+    # Vytvoření složky pro uložení dat, pokud neexistuje
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+    cnt = 0
+    # Uložení dat pro každý ticker zvlášť
+    for ticker in list(portfolio):
+        # Získání dat pro konkrétní ticker
+        ticker_data = data['Adj Close'][ticker].dropna()  # Používáme 'Adj Close' jako příklad
+
+        ticker_data = ticker_data.round(2)
+
+        cnt += 1
+        # Uložení dat do CSV souboru
+        file_path = os.path.join(folder_path, f'{ticker}.csv')
+        ticker_data.to_csv(file_path)
+
+    print("Data byla úspěšně uložena do souborů.")
