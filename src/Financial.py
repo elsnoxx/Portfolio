@@ -58,6 +58,32 @@ def getNews( ticker ):
     print(news)
     return news
 
+def BasicInfo(ticker, ticker_symbol):
+    try:
+        info = ticker.info
+
+        common_data = {
+                'TickerSymbol': ticker_symbol,
+                'sector': info['sector'],
+                'longBusinessSummary': info['longBusinessSummary'],
+                'longName': info['longName'],
+                'marketCap': info['marketCap'],
+                'fiftyTwoWeekLow': info['fiftyTwoWeekLow'],
+                'fiftyTwoWeekHigh': info['fiftyTwoWeekHigh'],
+                'currentPrice': info['currentPrice'],
+                'shares_outstanding': info['sharesOutstanding'],
+                'target_high_price': info['targetHighPrice'],
+                'target_low_price': info['targetLowPrice'],
+                'target_mean_price': info['targetMeanPrice'],
+                'target_median_price': info['targetMedianPrice'],
+                'recommendation_mean': info['recommendationMean'],
+                'recommendation_key': info['recommendationKey'],
+                'number_of_analyst_opinions': info['numberOfAnalystOpinions']
+            }
+        
+        return common_data
+    except Exception as e:
+        return {'error': str(e)}
 
 def calculate_financial_metrics(ticker, ticker_symbol):
     try:

@@ -4,7 +4,7 @@ from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
 import threading
 from src.RSSdataroma import get_feed_html
-from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, getNews
+from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, getNews, BasicInfo
 from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
 from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
@@ -62,24 +62,7 @@ def submit():
 
     print(metrics)
     print(metrics)
-    common_data = {
-                'TickerSymbol': metrics['TickerSymbol'],
-                'sector': metrics['sector'],
-                'longBusinessSummary': metrics['longBusinessSummary'],
-                'longName': metrics['longName'],
-                'marketCap': metrics['marketCap'],
-                'fiftyTwoWeekLow': metrics['fiftyTwoWeekLow'],
-                'fiftyTwoWeekHigh': metrics['fiftyTwoWeekHigh'],
-                'currentPrice': metrics['currentPrice'],
-                'shares_outstanding': metrics['Shares Outstanding'],
-                'target_high_price': metrics['Target High Price'],
-                'target_low_price': metrics['Target Low Price'],
-                'target_mean_price': metrics['Target Mean Price'],
-                'target_median_price': metrics['Target Median Price'],
-                'recommendation_mean': metrics['Recommendation Mean'],
-                'recommendation_key': metrics['Recommendation Key'],
-                'number_of_analyst_opinions': metrics['Number of Analyst Opinions']
-            }
+    
 
     if metrics == 1:
         return jsonify({"error": "Bad ticker"})
@@ -115,7 +98,7 @@ def submit():
 
             rendered_html_dcf = render_template('/financeModels/DCF.html', **dcf_data)
 
-            rendered_html = render_template('/financeModels/result.html', **common_data)
+            rendered_html = render_template('/financeModels/basicData.html', **common_data)
             return jsonify({'html': rendered_html + rendered_html_dcf})
         else:
             rendered_html = render_template('/financeModels/result.html',
@@ -137,21 +120,23 @@ def portfolio():
     
     return render_template('portfolio.html', data=data)
 
-@app.route('/basicData', methods=['POST'])
-def basicData():
-    html_output = render_template('/financeModels/basicData.html')
+@app.route('/basicData/<ticker_symbol>', methods=['POST'])
+def basicData(ticker_symbol):
+    ticker = yf.Ticker(ticker_symbol.upper())
+    data = BasicInfo(ticker, ticker_symbol)
+    html_output = render_template('/financeModels/basicData.html', **data)
     return jsonify({'html': html_output})
 
 
 @app.route('/dcf', methods=['POST'])
 def dcf():
     html_output = render_template('/financeModels/basicData.html')
-    return jsonify({'html': html_output})
+    return jsonify({'html': 'done'})
 
 @app.route('/income', methods=['POST'])
 def income():
     html_output = render_template('/financeModels/basicData.html')
-    return jsonify({'html': html_output})
+    return jsonify({'html': 'done'})
 
 @app.route('/crypto')
 def crypto():

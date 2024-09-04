@@ -1,27 +1,3 @@
-// document.getElementById('myForm').addEventListener('submit', function (event) {
-//     event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
-//     document.getElementById('loading-spinner').classList.remove('d-none');
-//     const resultDiv = document.getElementById('result');
-//     resultDiv.innerHTML = ` `;
-
-//     const formData = new FormData(this);
-
-//     fetch('/submit', {
-//         method: 'POST',
-//         body: formData
-//     })
-//         .then(response => response.json())
-//         .then(data => {
-//             document.getElementById('loading-spinner').classList.add('d-none');
-//             resultDiv.innerHTML = data.html;
-//         })
-//         .catch(error => {
-//             resultDiv.innerHTML = ` Neznami ticker `;
-//             console.error('Chyba:', error);
-//         });
-// });
-
-
 document.getElementById('myForm').addEventListener('submit', function (event) {
     event.preventDefault();  // Zabraňuje odeslání formuláře tradiční metodou
 
@@ -35,11 +11,16 @@ document.getElementById('myForm').addEventListener('submit', function (event) {
     resultApi1.innerHTML = ``;
     resultApi2.innerHTML = ``;
     resultApi3.innerHTML = ``;
+    
 
-    const formData = new FormData(this);
+    // Získání hodnoty tickeru
+    const tickerSymbol = document.getElementById('ticker_symbol').value;
+    console.log(tickerSymbol)
+    const formData = new FormData();
+    const api1Url = `/basicData/${tickerSymbol}`;
 
     // Volání prvního API
-    fetch('/basicData', {
+    fetch(api1Url, {
         method: 'POST',
         body: formData
     })
