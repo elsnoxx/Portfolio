@@ -18,6 +18,7 @@ document.getElementById('myForm').addEventListener('submit', function (event) {
     console.log(tickerSymbol)
     const formData = new FormData();
     const api1Url = `/basicData/${tickerSymbol}`;
+    const api2Url = `/dcf/${tickerSymbol}`;
 
     // Volání prvního API
     fetch(api1Url, {
@@ -30,7 +31,7 @@ document.getElementById('myForm').addEventListener('submit', function (event) {
         resultApi1.innerHTML = data.html;
         
     }).then(
-        fetch('/dcf', {
+        fetch(api2Url, {
             method: 'POST',
             body: formData
         })

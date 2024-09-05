@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, url_for
 from flask_apscheduler import APScheduler
 from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
@@ -9,6 +9,7 @@ from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
 from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
 from src.HWmonitoring import get_CPU_usage, get_RAM_usage
+from src.Graphs import stockGraph
 import datetime as dt
 
 app = Flask(__name__, static_folder='public')
@@ -128,10 +129,15 @@ def basicData(ticker_symbol):
     return jsonify({'html': html_output})
 
 
-@app.route('/dcf', methods=['POST'])
-def dcf():
-    html_output = render_template('/financeModels/basicData.html')
-    return jsonify({'html': 'done'})
+@app.route('/dcf/<ticker_symbol>', methods=['POST'])
+def dcf(ticker_symbol):
+    file_name = stockGraph(ticker_symbol)
+    image_url = url_for('static', filename=f'img/graph/{ file_name }')
+    
+    # Vytvoření HTML stringu s obrázkem
+    img_tag = f'<img src="{image_url}" alt="{ticker_symbol}">'
+    
+    return jsonify({'html': img_tag })
 
 @app.route('/income', methods=['POST'])
 def income():
