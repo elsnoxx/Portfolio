@@ -117,7 +117,7 @@ def get_crypto_details(crypto_id):
                 'image': data['image']['small'],
                 'name': data['name'],
                 'market_cap': formatMarketCap(data["market_data"]["market_cap"]["usd"]),
-                'price': f"${data["market_data"]["current_price"]["usd"]:,}",
+                'price': f'${data["market_data"]["current_price"]["usd"]:,}',
                 'high_24h': f"${data["market_data"]["high_24h"]["usd"]:,}",
                 'low_24h': f"${data["market_data"]["low_24h"]["usd"]:,}",
                 "circulating_supply": data["market_data"]["circulating_supply"],
