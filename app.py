@@ -11,7 +11,9 @@ from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
 from src.HWmonitoring import get_CPU_usage, get_RAM_usage
 from src.Graphs import stockGraph
+from src.Images import generate_image_from_html
 import datetime as dt
+import time
 
 app = Flask(__name__, static_folder='public')
 scheduler = APScheduler()
@@ -40,10 +42,10 @@ def cpu_usage():
 
 @app.route('/api/ram-usage', methods=['POST'])
 def ram_usage():
-    return jsonify(get_RAM_usage(), methods=['GET'])
+    return jsonify(get_RAM_usage())
 
 @app.route('/api/crypto_fear_and_greed')
-def  crypto_fear_and_greed():
+def crypto_fear_and_greed():
     data = FearAndGreesIndex()
     return render_template('/crypto/fearAndGreed.html', data=data)
 
@@ -272,6 +274,14 @@ def run_initial_job():
     # Tato funkce se spustí v samostatném vlákně
     deleteLogs()
 
+def run_img_fear_index_job():
+    time.sleep(10)
+    print("start")
+    with app.app_context():  # Vytvoř aplikační kontext
+        html_template = render_template('/crypto/fearAndGreed.html', data=FearAndGreesIndex())
+        generate_image_from_html(html_template)
+
+
 
 if __name__ == '__main__':
     scheduler.add_job(func=logCpuUsage, trigger='interval', seconds=5, id='cpujob')
@@ -280,6 +290,7 @@ if __name__ == '__main__':
 
     # Spuštění úlohy při startu aplikace v samostatném vlákně
     threading.Thread(target=run_initial_job).start()
+    threading.Thread(target=run_img_fear_index_job).start()
 
     scheduler.start()
     app.run(host="0.0.0.0", port=5000, debug=True)
