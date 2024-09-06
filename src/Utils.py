@@ -58,3 +58,13 @@ def deleteLogs():
                 os.remove(folder_path + '\\' + file_sort[0])
                 f.write('Deleted: ' + folder_path + '\\' + file_sort[0] + '\n')
 
+
+def log_delete(folder_path, file_name):
+    base_path = os.path.abspath(os.path.dirname('logs'))
+    folder_path = os.path.join(base_path, 'logs', 'FileDelete')
+    nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
+
+    ensure_directory_exists(folder_path)
+    
+    with open(nameOfFile, 'a+') as f:
+        f.write('Deleted: ' + folder_path + '\\' + file_name + '\n')

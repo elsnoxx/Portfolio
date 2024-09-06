@@ -8,3 +8,7 @@
 
 - https://www.youtube.com/watch?v=z0AfnEPyvAs
 - https://www.youtube.com/watch?v=OqCqFfLfFsk
+
+
+## Done
+- crypto screener
