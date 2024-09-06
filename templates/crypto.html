@@ -40,10 +40,15 @@
   </script>
 </div>
 <!-- TradingView Widget END -->
-
-<h1>Crypto page</h1>
-<p class="lead">Get the latest updates on your favorite cryptocurrencies by entering their ticker symbol below.</p>
-<p>Stay informed and make better investment decisions with real-time data.</p>
+<div class="row container mt-4">
+  <div class="col-md-8">
+    <h1>Crypto page</h1>
+    <p class="lead">Get the latest updates on your favorite cryptocurrencies by entering their ticker symbol below.</p>
+    <p>Stay informed and make better investment decisions with real-time data.</p>
+  </div>
+  <div class="col-md-4" id="fearAndGreed">
+  </div>
+</div>
 
 <div class="container mt-4">
   <h1>Cryptocurrencies by Market Cap</h1>
@@ -66,6 +71,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     loadRSSFeed();
+    loadFearAndGreed();
   });
 
   function loadRSSFeed() {
@@ -98,6 +104,29 @@
         console.error('Error:', error);
         document.getElementById('output').innerHTML = 'Error loading data.';
       });
+  }
+
+  async function loadFearAndGreed() {
+    try {
+      const response = await fetch('/api/crypto_fear_and_greed', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'text/html'
+        }
+      });
+
+      if (response.ok) {
+        const htmlContent = await response.text(); // Získání HTML obsahu jako text
+        const fearAndGreedContainer = document.getElementById('fearAndGreed');
+
+        // Vložení HTML obsahu do určeného elementu
+        fearAndGreedContainer.innerHTML = htmlContent;
+      } else {
+        console.error("Failed to load Fear and Greed data:", response.status);
+      }
+    } catch (error) {
+      console.error("Error loading Fear and Greed data:", error);
+    }
   }
 
 

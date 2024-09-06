@@ -1,5 +1,7 @@
 import requests
 from datetime import datetime
+import pandas as pd
+import numpy as np
 
 # https://docs.coingecko.com/reference/introduction
 
@@ -127,3 +129,41 @@ def get_crypto_details(crypto_id):
         print(response)
         return 1
         
+
+
+
+# def FearAndGreesIndex():
+#     r = requests.get('https://api.alternative.me/fng/?limit=0')
+#     df = pd.DataFrame(r.json()['data'])
+#     df.value = df.value.astype(int)
+#     df.timestamp = pd.to_datetime(df.timestamp, unit='s')
+#     df.set_index('timestamp', inplace=True)
+#     df = df[::-1]
+#     print(df)
+
+
+def FearAndGreesIndex():
+    # Načtení dat z API
+    r = requests.get('https://api.alternative.me/fng/?limit=0')
+    data = r.json()['data']
+    df = pd.DataFrame(data)
+    
+    # Oprava datového typu
+    df['value'] = df['value'].astype(int)
+    df['timestamp'] = pd.to_numeric(df['timestamp'], errors='coerce')
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='s')
+    
+    # Nastavení timestamp jako indexu
+    df.set_index('timestamp', inplace=True)
+    
+    # Získání nejnovějšího záznamu
+    latest_entry = df.iloc[-1]
+    
+    # Příprava výsledku
+    result = {
+        'value_classification': latest_entry['value_classification'],
+        'value': int(latest_entry['value']),  # Převod na standardní Python int
+        'updated': latest_entry.name.strftime('%Y-%m-%d')
+    }
+    
+    return result

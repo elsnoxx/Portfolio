@@ -1,0 +1,22 @@
+
+
+<div class="container mt-4">
+  <div class="fear-and-greed-container">
+      <div class="row">
+          <div class="col-md-12">
+              <h5 class="fear-and-greed-header">Fear and Greed Index</h5>
+          </div>
+      </div>
+      <div class="row fear-and-greed-info">
+          <div class="col-md-4">
+              <p class="value" id="value">{{data.value}}</p>
+              <p class="classification" id="classification" data-classification="{{data.value_classification}}">
+                  {{data.value_classification}}
+              </p>
+          </div>
+          <div class="col-md-8">
+              <p class="updated" id="updated">Last Updated: {{data.updated}}</p>
+          </div>
+      </div>
+  </div>
+</div>

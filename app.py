@@ -6,7 +6,7 @@ import yfinance as yf
 import threading
 from src.RSSdataroma import get_feed_html
 from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, getNews, BasicInfo
-from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos
+from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos, FearAndGreesIndex
 from src.ProtfolioFromExcel import portfolioTickers
 from src.AppLogger import setup_request_logger
 from src.HWmonitoring import get_CPU_usage, get_RAM_usage
@@ -40,7 +40,13 @@ def cpu_usage():
 
 @app.route('/api/ram-usage', methods=['POST'])
 def ram_usage():
-    return jsonify(get_RAM_usage())
+    return jsonify(get_RAM_usage(), methods=['GET'])
+
+@app.route('/api/crypto_fear_and_greed')
+def  crypto_fear_and_greed():
+    data = FearAndGreesIndex()
+    return render_template('/crypto/fearAndGreed.html', data=data)
+
 
 @app.route('/api/deletelogs', methods=['GET'])
 def get_deletelogs():
