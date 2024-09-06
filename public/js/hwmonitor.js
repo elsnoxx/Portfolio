@@ -67,26 +67,74 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/api/cpu-usage', {
             method: 'POST'
         })
-        .then(response => response.json())
-        .then(data => {
-            updateCpuUsage(data.cpu_usage);
-        })
-        .catch(error => {
-            console.error('Error fetching CPU usage:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                updateCpuUsage(data.cpu_usage);
+            })
+            .catch(error => {
+                console.error('Error fetching CPU usage:', error);
+            });
     }
 
     function fetchRamUsage() {
         fetch('/api/ram-usage', {
             method: 'POST'
         })
-        .then(response => response.json())
-        .then(data => {
-            updateRamUsage(data.ram_usage);
-        })
-        .catch(error => {
-            console.error('Error fetching RAM usage:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                updateRamUsage(data.ram_usage);
+            })
+            .catch(error => {
+                console.error('Error fetching RAM usage:', error);
+            });
+    }
+
+    // Načíst log soubor pomocí fetch API
+    async function loadDeleteLogs() {
+        try {
+            const response = await fetch('/api/deletelogs', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+    
+            if (response.ok) {
+                const htmlContent = await response.text(); // Získání celého HTML obsahu jako textu
+                const logContainer = document.getElementById('deletelog-container');
+                
+                // Vložit HTML obsah do určeného elementu
+                logContainer.innerHTML = htmlContent;
+            } else {
+                console.error("Failed to load logs:", response.status);
+            }
+        } catch (error) {
+            console.error("Error loading logs:", error);
+        }
+    }
+
+    // Načíst log soubor pomocí fetch API
+    async function loadHttprequestLogs() {
+        try {
+            const response = await fetch('/api/httprequesteslogs', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+    
+            if (response.ok) {
+                const htmlContent = await response.text(); // Získání celého HTML obsahu jako textu
+                const logContainer = document.getElementById('httprequesteslogs-container');
+                
+                // Vložit HTML obsah do určeného elementu
+                logContainer.innerHTML = htmlContent;
+            } else {
+                console.error("Failed to load logs:", response.status);
+            }
+        } catch (error) {
+            console.error("Error loading logs:", error);
+        }
     }
 
     // Update every 5 seconds
@@ -95,4 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(fetchRamUsage, 5000);
     fetchRamUsage(); // Initial fetch
+    loadDeleteLogs();
+    loadHttprequestLogs();
 });

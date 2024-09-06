@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <h1 style="padding-top: 30px;">{{ name }}</h1>
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills" id="myTab" role="tablist">
+                {% for log in logs %}
+                    <li class="nav-item text-center" role="presentation">
+                        <a class="nav-link {% if loop.index == 1 %}active{% endif %}" id="tab{{ loop.index }}-tab" data-bs-toggle="pill" href="#{{ log.filename }}" role="tab" aria-controls="tab{{ loop.index }}" aria-selected="{% if loop.index == 1 %}true{% else %}false{% endif %}">
+                            {{ log.filename }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="card-body tab-content" id="myTabContent">
+            {% for log in logs %}
+                <div class="tab-pane fade {% if loop.index == 1 %}show active{% endif %}" id="{{ log.filename }}" role="tabpanel" aria-labelledby="tab{{ loop.index }}-tab">
+                    <h5 class="card-title">{{ log.filename }}</h5>
+                    <div class="card-text text-start" style="max-height: 300px; overflow-y: auto;">
+                        {% for line in log.content %}
+                            <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

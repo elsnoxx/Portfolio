@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, url_for
+import os
 from flask_apscheduler import APScheduler
 from src.Utils import logCpuUsage, logRamUsage, deleteLogs
 import yfinance as yf
@@ -40,6 +41,70 @@ def cpu_usage():
 @app.route('/api/ram-usage', methods=['POST'])
 def ram_usage():
     return jsonify(get_RAM_usage())
+
+@app.route('/api/deletelogs', methods=['GET'])
+def get_deletelogs():
+    base_path = os.path.abspath(os.path.dirname('logs'))
+    folder_path = os.path.join(base_path, 'logs', 'FileDelete')
+    dir_list = os.listdir(folder_path)
+    dir_list = sorted(dir_list, reverse=True)  # Seřadíme soubory podle jména (datum v názvu)
+    
+    # Omezíme počet na max. 4 soubory
+    files_to_display = dir_list[:4]
+    
+    logs_data = []
+    
+    for filename in files_to_display:
+        log_path = os.path.join(folder_path, filename)
+        
+        try:
+            with open(log_path, 'r') as log_file:
+                log_lines = log_file.readlines()
+            # Zobrazení pouze posledních 10 řádků
+            # last_lines = log_lines[-100:]
+            logs_data.append({
+                'filename': filename,
+                'content': log_lines
+            })
+        except FileNotFoundError:
+            logs_data.append({
+                'filename': filename,
+                'content': ['Log soubor nebyl nalezen.']
+            })
+
+    return render_template('/hwmonitoring/logsFile.html', logs=logs_data, name=filename.split('.')[0].split('-')[0] )
+
+@app.route('/api/httprequesteslogs', methods=['GET'])
+def get_httprequesteslogs():
+    base_path = os.path.abspath(os.path.dirname('logs'))
+    folder_path = os.path.join(base_path, 'logs', 'http_requests')
+    dir_list = os.listdir(folder_path)
+    dir_list = sorted(dir_list, reverse=True)  # Seřadíme soubory podle jména (datum v názvu)
+    
+    # Omezíme počet na max. 4 soubory
+    files_to_display = dir_list[:4]
+    
+    logs_data = []
+    
+    for filename in files_to_display:
+        log_path = os.path.join(folder_path, filename)
+        
+        try:
+            with open(log_path, 'r') as log_file:
+                log_lines = log_file.readlines()
+            # Zobrazení pouze posledních 10 řádků
+            # last_lines = log_lines[-10:]
+            logs_data.append({
+                'filename': filename,
+                'content': log_lines
+            })
+        except FileNotFoundError:
+            logs_data.append({
+                'filename': filename,
+                'content': ['Log soubor nebyl nalezen.']
+            })
+
+    return render_template('/hwmonitoring/logsFile.html', logs=logs_data, name=filename.split('.')[0].split('-')[0] )
 
 @app.route('/feed')
 def feed():
