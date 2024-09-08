@@ -25,7 +25,12 @@ def stockGraph(ticker):
     base_path = os.path.abspath(os.path.dirname('public'))
     folder_path = os.path.join(base_path, 'public' ,'img', 'graph')
     ensure_directory_exists(folder_path)
-    save_path = folder_path + '\\' 
+    
+    if os.name == 'nt':
+        save_path = folder_path + '\\' 
+    if os.name == 'posix':
+        save_path = folder_path + '/' 
+        
     file_name = ticker + '#'+ str(datetime.now().date()) +'#'+'.png'
 
     # Získání dnešního data
