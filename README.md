@@ -4,8 +4,17 @@
 - vytvorit jobu, ktera vytvori grafy obrazky nebo svg, ktere se pak budou zobrazovat na strance, aby se predeslo dlouhemu zpracovani a nacitani
 - stock prediction https://www.youtube.com/watch?v=0E_31WqVzCY
 - fear and greed pro akcie https://edition.cnn.com/markets/fear-and-greed - hotovo, ale premenit na to aby se generoval jednou denne obrazek abych to nebylo odkazane tolik na API
+- 
 
-- server na raspi https://www.youtube.com/watch?v=BpcK5jON6Cg
+
+- Akcie
+        - dodelat vypocet DCF
+        - Vymyslet dalsi hoditi ukazatele akcii
+
+
+- Monitoring
+        - otocit soubor tak aby zacinal nejnovjesim zapisem a ne tim nejstarsim
+        - vylepsit zobrazeni, grafy teloty loadu CPU a RAM
 
 - https://www.youtube.com/watch?v=z0AfnEPyvAs
 - https://www.youtube.com/watch?v=OqCqFfLfFsk
@@ -16,7 +25,9 @@
 
 
 
-# Hostovano
+# Server
+
+- tutorial na nastevni serveru na raspi https://www.youtube.com/watch?v=BpcK5jON6Cg
 
 pouzito raspi, ngnix jako server a gunicorn3 pro spuzeti aplikace
 
@@ -33,4 +44,5 @@ server {
 }
 ```
 
-ke spusteni gunicorn3 pouzxit prikaz --> gunicorn3 --workers=3 app:app --daemon
+ke spusteni gunicorn3 pouzxit prikaz 
+        - gunicorn3 --workers=3 app:app --daemon
