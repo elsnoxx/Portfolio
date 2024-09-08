@@ -1,5 +1,0 @@
-Deleted: C:\Users\admin\Documents\GitHub\Portfolio\logs\fileDelete\FileDelete-2024-08-29.txt
-Deleted: C:\Users\admin\Documents\GitHub\Portfolio\logs\http_requests\HttpRequests-2024-08-29.log
-Deleted: C:\Users\admin\Documents\GitHub\Portfolio\logs\ram\LogRam-2024-08-29.txt
-Deleted: C:\Users\admin\Documents\GitHub\Portfolio\logs\cpu\LogCPU-2024-08-29.txt
-Deleted: C:\Users\admin\Documents\GitHub\Portfolio\logs\FileDelete\aapl#2024-09-05#.png

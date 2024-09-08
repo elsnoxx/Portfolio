@@ -290,7 +290,7 @@ if __name__ == '__main__':
 
     # Spuštění úlohy při startu aplikace v samostatném vlákně
     threading.Thread(target=run_initial_job).start()
-    threading.Thread(target=run_img_fear_index_job).start()
+    # threading.Thread(target=run_img_fear_index_job).start()
 
     scheduler.start()
     app.run(host="0.0.0.0", port=5000, debug=True)
