@@ -38,7 +38,6 @@ def logCpuUsage():
 
 def deleteLogs():
     # Získání absolutní cesty pro složku
-    print("OS name " + os.name)
     base_path = os.path.abspath(os.path.dirname('logs'))
     folder_path = os.path.join(base_path, 'logs', 'FileDelete')
     nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
@@ -49,32 +48,37 @@ def deleteLogs():
     with open(nameOfFile, 'a+') as f:
         base_path = os.path.abspath(os.path.dirname('logs'))
         logs_folders = ['ram', 'cpu', 'fileDelete', 'http_requests']
+        
         for path in logs_folders:
             folder_path = os.path.join(base_path, 'logs', path)
 
+            # Kontrola, jestli složka existuje, pokud ne, přeskočit
+            if not os.path.exists(folder_path):
+                continue
+
             dir_list = os.listdir(folder_path)
 
-            if (len(dir_list) >= 5 and os.name == 'nt'):
+            if len(dir_list) >= 5:
                 file_sort = sorted(dir_list)
-                os.remove(folder_path + '\\' + file_sort[0])
-                f.write('Deleted: ' + folder_path + '\\' + file_sort[0] + '\n')
-            else:
-                file_sort = sorted(dir_list)
-                os.remove(folder_path + '/' + file_sort[0])
-                f.write('Deleted: ' + folder_path + '/' + file_sort[0] + '\n')
+                file_to_delete = os.path.join(folder_path, file_sort[0])  # Použití os.path.join pro správné cesty
+
+                # Odstranění souboru
+                os.remove(file_to_delete)
+                f.write('Deleted: ' + file_to_delete + '\n')
 
 
 def log_delete(folder_path, file_name):
+    # Získání absolutní cesty pro složku
     base_path = os.path.abspath(os.path.dirname('logs'))
     folder_path = os.path.join(base_path, 'logs', 'FileDelete')
     nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
 
+    # Vytvoření složky, pokud neexistuje
     ensure_directory_exists(folder_path)
     
-    if os.name == 'nt':
-        with open(nameOfFile, 'a+') as f:
-            f.write('Deleted: ' + folder_path + '\\' + file_name + '\n')
-            
-    if os.name == 'posix':
-        with open(nameOfFile, 'a+') as f:
-            f.write('Deleted: ' + folder_path + '/' + file_name + '\n')
+    # Vytvoření cesty ke smazanému souboru
+    file_to_delete = os.path.join(folder_path, file_name)
+    
+    # Zápis do souboru
+    with open(nameOfFile, 'a+') as f:
+        f.write('Deleted: ' + file_to_delete + '\n')

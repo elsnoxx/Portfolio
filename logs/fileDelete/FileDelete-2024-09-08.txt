@@ -14,3 +14,4 @@ Deleted: C:\Users\ficek\Documents\GitHub\Portfolio\logs\ram/LogRam-2024-09-06.tx
 Deleted: C:\Users\ficek\Documents\GitHub\Portfolio\logs\cpu/LogCPU-2024-09-06.txt
 Deleted: C:\Users\ficek\Documents\GitHub\Portfolio\logs\fileDelete/FileDelete-2024-09-06.txt
 Deleted: C:\Users\ficek\Documents\GitHub\Portfolio\logs\http_requests/HttpRequests-2024-09-06.log
+Deleted: C:\Users\ficek\Documents\GitHub\Portfolio\logs\FileDelete\O#2024-09-06#.png
