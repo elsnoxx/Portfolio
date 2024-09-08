@@ -13,3 +13,24 @@
 
 ## Done
 - crypto screener
+
+
+
+# Hostovano
+
+pouzito raspi, ngnix jako server a gunicorn3 pro spuzeti aplikace
+
+nginex server settings
+
+```
+server {
+        listen 80;
+        location / {
+                proxy_pass http://127.0.0.1:8000;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+}
+```
+
+ke spusteni gunicorn3 pouzxit prikaz --> gunicorn3 --workers=3 app:app --daemon
