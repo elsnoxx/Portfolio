@@ -67,7 +67,7 @@ def BasicInfo(ticker, ticker_symbol):
                 'sector': info['sector'],
                 'longBusinessSummary': info['longBusinessSummary'],
                 'longName': info['longName'],
-                'marketCap': info['marketCap'],
+                'marketCap': formatMarketCap(info.get('marketCap', 0)),
                 'fiftyTwoWeekLow': info['fiftyTwoWeekLow'],
                 'fiftyTwoWeekHigh': info['fiftyTwoWeekHigh'],
                 'currentPrice': info['currentPrice'],

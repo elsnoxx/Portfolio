@@ -157,6 +157,7 @@ def FearAndGreesIndex():
     df.set_index('timestamp', inplace=True)
     
     # Získání nejnovějšího záznamu
+    df = df[::-1]
     latest_entry = df.iloc[-1]
     
     # Příprava výsledku
