@@ -91,22 +91,19 @@ def get_crypto_details(crypto_id):
 
     response = requests.get(url)
     if (response == 404):
-        print(response)
         return 2
     if (response != 429):
         data = response.json()
         if (data == {'error': 'coin not found'} ):
-            print(response)
             return 2
         
-        print(data)
         if (len(data['links']['repos_url']['github']) == 2):
             open_source = data['links']['repos_url']['github'][0]
         else:
             open_source = data['links']['repos_url']['github']
 
         processed_data = {
-                "symbol": data['symbol'],
+                "symbol": data['symbol'].upper(),
                 "launch_year": data['genesis_date'],
                 "algorithm": data['hashing_algorithm'],
                 'description': data['description']['en'],
@@ -124,9 +121,9 @@ def get_crypto_details(crypto_id):
                 "total_supply": data["market_data"]["total_supply"],
                 "trading_volume_24h": data["market_data"]["total_volume"]["usd"]
             }
+        print(processed_data)
         return processed_data
     else:
-        print(response)
         return 1
         
 
