@@ -40,8 +40,8 @@ def logCpuUsage():
 def deleteLogs():
     # Získání absolutní cesty pro složku
     base_path = os.path.abspath(os.path.dirname('logs'))
-    folder_path = os.path.join(base_path, 'logs', 'FileDelete')
-    nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
+    folder_path = os.path.join(base_path, 'logs', 'fileDelete')
+    nameOfFile = os.path.join(folder_path, 'fileDelete-' + str(dt.datetime.now().date()) + '.txt')
     
     # Vytvoření složky, pokud neexistuje
     ensure_directory_exists(folder_path)
@@ -71,8 +71,8 @@ def deleteLogs():
 def log_delete(folder_path, file_name):
     # Získání absolutní cesty pro složku
     base_path = os.path.abspath(os.path.dirname('logs'))
-    folder_path = os.path.join(base_path, 'logs', 'FileDelete')
-    nameOfFile = os.path.join(folder_path, 'FileDelete-' + str(dt.datetime.now().date()) + '.txt')
+    folder_path = os.path.join(base_path, 'logs', 'fileDelete')
+    nameOfFile = os.path.join(folder_path, 'fileDelete-' + str(dt.datetime.now().date()) + '.txt')
 
     # Vytvoření složky, pokud neexistuje
     ensure_directory_exists(folder_path)

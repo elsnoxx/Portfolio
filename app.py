@@ -53,7 +53,7 @@ def crypto_fear_and_greed():
 @app.route('/api/deletelogs', methods=['GET'])
 def get_deletelogs():
     base_path = os.path.abspath(os.path.dirname('logs'))
-    folder_path = os.path.join(base_path, 'logs', 'FileDelete')
+    folder_path = os.path.join(base_path, 'logs', 'fileDelete')
     dir_list = os.listdir(folder_path)
     dir_list = sorted(dir_list, reverse=True)  # Seřadíme soubory podle jména (datum v názvu)
     
