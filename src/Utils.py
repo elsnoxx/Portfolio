@@ -1,6 +1,7 @@
 import os
 import psutil
 import datetime as dt
+from pathlib import Path
 
 def ensure_directory_exists(path):
     if not os.path.exists(path):
@@ -64,7 +65,7 @@ def deleteLogs():
 
                 # Odstranění souboru
                 os.remove(file_to_delete)
-                f.write('Deleted: ' + file_to_delete + '\n')
+                f.write('Deleted: ' + str(dt.datetime.now()) + ' ' + file_to_delete + '\n')
 
 
 def log_delete(folder_path, file_name):
@@ -81,4 +82,12 @@ def log_delete(folder_path, file_name):
     
     # Zápis do souboru
     with open(nameOfFile, 'a+') as f:
-        f.write('Deleted: ' + file_to_delete + '\n')
+        f.write('Deleted: ' + str(dt.datetime.now()) + ' ' + file_to_delete + '\n')
+
+
+def get_files_tree(startpath):
+    file_tree = []
+    for item in sorted(Path(startpath).iterdir()):
+        file_tree.append({'name': item.name, 'path': str(item), 'is_dir': item.is_dir()})
+    return file_tree
+

@@ -1,0 +1,93 @@
+<div class="container mt-4">
+    <h1 class="mb-4">Files Tree</h1>
+
+    <h2 class="mt-4 mb-3">Logs Directory</h2>
+    <div class="row">
+        {% for folder, files in log_files_tree.items() %}
+        <div class="col-md-3 mb-3">
+            <h4 class="folder">{{ folder }}</h4>
+            <ul class="list-group">
+                {% for item in files %}
+                <li class="list-group-item">
+                    {{ item.name }}
+                    {% if item.is_dir %}
+                    <ul class="list-group mt-2">
+                        <!-- Můžete zde přidat další logiku pro zanořování složek -->
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="mt-4 mb-3">Graph Directory</h2>
+    <div class="row">
+        {% for item in img_files_tree %}
+        <div class="col-md-3 mb-3">
+            <div class="card">
+                {% if not item.is_dir %}
+                <!-- Tlačítko pro otevření modalu -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imgModal"
+                    data-img="{{ item.url }}">
+                    {{ item.name }}
+                </button>
+                <div class="card-body">
+                    <img class="card-img-top" id="{{ item.name }}" src="{{ item.url }}" alt="{{ item.name }}">
+                </div>
+                {% else %}
+                <div class="card-body">
+                    <p class="folder">{{ item.name }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imgModal" tabindex="-1" role="dialog" aria-labelledby="imgModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imgModalLabel">Image Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Image will be inserted here -->
+                <div id="modal-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var imgModal = document.getElementById('imgModal');
+        
+        imgModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Tlačítko, které otevřelo modal
+            var imgId = button.getAttribute('data-img'); // Získání ID obrázku z data-* atributu
+            
+            // Získání obrázku podle ID
+            var imgElement = document.getElementById(imgId);
+            
+            // Získání HTML kódu obrázku
+            var imgHTML = imgElement.outerHTML;
+            
+            // Nastavení HTML kódu obrázku do modálního obsahu
+            var modalContent = imgModal.querySelector('#modal-content');
+            modalContent.innerHTML = imgHTML;
+            console.log(imgHTML)
+        });
+    });
+</script>

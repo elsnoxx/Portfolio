@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template, url_for
 import os
 from flask_apscheduler import APScheduler
-from src.Utils import logCpuUsage, logRamUsage, deleteLogs
+from src.Utils import logCpuUsage, logRamUsage, deleteLogs, get_files_tree
 import yfinance as yf
 import threading
 from src.RSSdataroma import get_feed_html
@@ -99,7 +99,7 @@ def get_httprequesteslogs():
         
         try:
             with open(log_path, 'r') as log_file:
-                log_lines = log_file.readlines()
+                log_lines = reversed(log_file.readlines())
             # Zobrazení pouze posledních 10 řádků
             # last_lines = log_lines[-10:]
             logs_data.append({
@@ -113,6 +113,32 @@ def get_httprequesteslogs():
             })
 
     return render_template('/hwmonitoring/logsFile.html', logs=logs_data, name=filename.split('.')[0].split('-')[0] )
+
+@app.route('/api/filesTree', methods=['GET'])
+def get_files_tree_view():
+    logs_folders = ['ram', 'cpu', 'fileDelete', 'http_requests']
+    log_files_tree = {}
+    
+    # Procházení složek a shromažďování dat
+    for log in logs_folders:
+        folder_path = 'logs/' + log
+        files_tree = get_files_tree(folder_path)
+        log_files_tree[log] = files_tree  # Přidání dat do slovníku podle složky
+
+    # Získání dat pro obrázky
+    img_files_tree = get_files_tree('public/img/graph')
+
+    # Generování URL pro obrázky
+    for item in img_files_tree:
+        if not item['is_dir']:
+            # Vytvoření URL pro obrázek
+            item['url'] = url_for('static', filename='img/graph/' + item['name'])
+        else:
+            item['url'] = None  # Pokud je to složka, URL není potřeba
+
+    # Renderování šablony s předanými daty
+    return render_template('/hwmonitoring/filetree.html', log_files_tree=log_files_tree, img_files_tree=img_files_tree)
+
 
 @app.route('/feed')
 def feed():

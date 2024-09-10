@@ -13,8 +13,8 @@
 
 
 - Monitoring
-        - otocit soubor tak aby zacinal nejnovjesim zapisem a ne tim nejstarsim
         - vylepsit zobrazeni, grafy teloty loadu CPU a RAM
+        - pohrat si s modal aby fungoval jak mel
 
 - https://www.youtube.com/watch?v=z0AfnEPyvAs
 - https://www.youtube.com/watch?v=OqCqFfLfFsk

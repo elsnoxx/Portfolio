@@ -137,6 +137,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function loadRootTree() {
+        try {
+            const response = await fetch('/api/filesTree', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/html'
+                }
+            });
+    
+            if (response.ok) {
+                const htmlContent = await response.text(); // Získání celého HTML obsahu jako textu
+                const logContainer = document.getElementById('filesTree-container');
+                
+                // Vložit HTML obsah do určeného elementu
+                logContainer.innerHTML = htmlContent;
+            } else {
+                console.error("Failed to load logs:", response.status);
+            }
+        } catch (error) {
+            console.error("Error loading logs:", error);
+        }
+    }
+
     // Update every 5 seconds
     setInterval(fetchCpuUsage, 5000);
     fetchCpuUsage(); // Initial fetch
@@ -145,4 +168,5 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchRamUsage(); // Initial fetch
     loadDeleteLogs();
     loadHttprequestLogs();
+    loadRootTree();
 });

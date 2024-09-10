@@ -45,3 +45,19 @@
 .speed .units {
     font-size: 1vw;
 }
+
+.folder {
+    font-weight: bold;
+    color: #007bff;
+}
+.file-item {
+    margin: 5px 0;
+}
+.file-item:hover {
+    background-color: #f8f9fa;
+}
+.card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+}
