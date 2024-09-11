@@ -19,6 +19,30 @@
 - https://www.youtube.com/watch?v=z0AfnEPyvAs
 - https://www.youtube.com/watch?v=OqCqFfLfFsk
 
+## Metriky
+
+Tento dokument obsahuje dvě hlavní sekce pro hodnocení, zda je akcie vhodná ke koupi. Zaměříme se na **technickou analýzu** a **výpočetní techniky**.
+
+## 1. Technická analýza (vyčítání z grafu)
+Technická analýza se zaměřuje na analýzu historických cenových dat a objemu obchodů pomocí grafů. Klíčové indikátory zahrnují:
+
+- **Trend**: Zjišťuje, zda je cena v dlouhodobém rostoucím, klesajícím nebo bočním trendu.
+- **Support a Resistance**: Identifikace cenových úrovní, kde cena často našla podporu nebo odpor.
+- **Klouzavé průměry (SMA, EMA)**: Výpočet průměrné ceny akcie za určité časové období, které pomáhají odhalit trend.
+- **Indikátory (RSI, MACD)**: Nástroje pro měření hybnosti a překoupenosti/přeprodanosti akcie.
+- **Svíčkové formace**: Vzory ve svíčkových grafech, které mohou signalizovat změny v cenovém vývoji.
+
+## 2. Výpočetní techniky
+Tato sekce se zaměřuje na finanční ukazatele a poměry, které hodnotí vnitřní hodnotu akcie.
+
+- **Poměrové ukazatele (P/E, P/B, P/S)**: Poměry mezi cenou akcie a ziskem (P/E), účetní hodnotou (P/B) nebo tržbami (P/S).
+- **Dividendy a výnosy**: Hodnocení dividendového výnosu a jeho stability.
+- **Free Cash Flow (FCF)**: Ukazuje, kolik volných peněžních toků firma generuje po odečtení investičních výdajů.
+- **ROE, ROA, ROI**: Ukazatele ziskovosti, které měří, jak efektivně firma využívá kapitál a aktiva k tvorbě zisku.
+- **Debt-to-Equity Ratio**: Poměr dluhu vůči vlastnímu kapitálu, který určuje finanční stabilitu firmy a její schopnost splácet závazky.
+
+Obě sekce společně poskytují ucelený přehled o vhodnosti akcie pro nákup.
+
 
 ## Done
 - crypto screener

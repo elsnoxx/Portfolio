@@ -49,3 +49,25 @@ h2 {
     border-radius: 5px;
     transform: translateX(-50%);
 }
+
+.buy {
+    color: green;
+    font-weight: bold;
+}
+
+.sell {
+    color: red;
+    font-weight: bold;
+}
+
+.bullish {
+    color: green;
+}
+
+.bearish {
+    color: red;
+}
+
+.neutral {
+    color: grey;
+}

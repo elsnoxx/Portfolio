@@ -5,6 +5,7 @@ from src.Utils import logCpuUsage, logRamUsage, deleteLogs, get_files_tree
 import yfinance as yf
 import threading
 from src.RSSdataroma import get_feed_html
+from src.metrick import technicalAnalysis
 from src.Financial import calculate_financial_metrics, Dividend_Discount_Model, getNews, BasicInfo
 from src.DataCrypto import get_crypto_details, bitcoinData, get_top_10_cryptos, FearAndGreesIndex
 from src.ProtfolioFromExcel import portfolioTickers
@@ -228,8 +229,8 @@ def basicData(ticker_symbol):
     return jsonify({'html': html_output})
 
 
-@app.route('/dcf/<ticker_symbol>', methods=['POST'])
-def dcf(ticker_symbol):
+@app.route('/graph/<ticker_symbol>', methods=['POST'])
+def route(ticker_symbol):
     file_name = stockGraph(ticker_symbol)
     image_url = url_for('static', filename=f'img/graph/{ file_name }')
     
@@ -238,10 +239,11 @@ def dcf(ticker_symbol):
     
     return jsonify({'html': img_tag })
 
-@app.route('/income', methods=['POST'])
-def income():
-    html_output = render_template('/financeModels/basicData.html')
-    return jsonify({'html': 'done'})
+@app.route('/technicalanalysis/<ticker_symbol>', methods=['POST'])
+def technicalanalysis(ticker_symbol):
+    data = technicalAnalysis(ticker_symbol.upper())
+    html_output = render_template('/financeModels/technicalanalysis.html', **data)
+    return jsonify({'html': html_output})
 
 @app.route('/crypto')
 def crypto():

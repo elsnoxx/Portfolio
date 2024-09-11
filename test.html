@@ -1,372 +1,59 @@
-<html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home page</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/public/css/banner.css">
-  <link rel="stylesheet" href="/public/css/spinner.css">
-  <link rel="stylesheet" href="/public/css/general.css">
-  <link rel="stylesheet" href="/public/css/monitoring.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Analysis Results</title>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Fixed navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/">About</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#">Contact</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/portfolio">Portfolio</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/crypto">Crypto</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/stock">Stock</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/hwmonitoring">Monitoring</a>
-              </li>
-          </ul>
+  <div id="result-api3" class="mt-3">
+    <h1>Technical Analysis Results</h1>
+    <div class="container">
+      <div class="section">
+        <h2>Trend Analysis</h2>
+        <div id="trend" class="info">
+          <p>Trend: <span class="recommendation">Rostoucí</span></p>
+          <p>Doporučení: <span class="recommendation">Buy</span></p>
+        </div>
       </div>
-  </nav>
-
-  <main role="main" class="container">
-      
-
-<link rel="stylesheet" href="/public/css/cryptoResult.css">
-
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container" style="width: 100%; height: 74px;">
-<iframe scrolling="no" allowtransparency="true" frameborder="0" src="https://www.tradingview-widget.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3AETHUSD%22%2C%22title%22%3A%22Ethereum%22%7D%2C%7B%22description%22%3A%22Solana%22%2C%22proName%22%3A%22COINBASE%3ASOLUSD%22%7D%2C%7B%22description%22%3A%22Doge%22%2C%22proName%22%3A%22BINANCE%3ADOGEUSD%22%7D%2C%7B%22description%22%3A%22Polkadot%22%2C%22proName%22%3A%22BINANCE%3ADOTUSD%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22isTransparent%22%3Afalse%2C%22displayMode%22%3A%22adaptive%22%2C%22colorTheme%22%3A%22dark%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A46%2C%22utm_source%22%3A%22127.0.0.1%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22ticker-tape%22%2C%22page-uri%22%3A%22127.0.0.1%3A5000%2Fcrypto%22%7D" title="ticker tape TradingView widget" lang="en" style="user-select: none; box-sizing: border-box; display: block; height: 74px; width: 100%;"></iframe>
-
-<style>
-.tradingview-widget-copyright {
-  font-size: 13px !important;
-  line-height: 32px !important;
-  text-align: center !important;
-  vertical-align: middle !important;
-  /* @mixin sf-pro-display-font; */
-  font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
-  color: #B2B5BE !important;
-}
-
-.tradingview-widget-copyright .blue-text {
-  color: #2962FF !important;
-}
-
-.tradingview-widget-copyright a {
-  text-decoration: none !important;
-  color: #B2B5BE !important;
-}
-
-.tradingview-widget-copyright a:visited {
-  color: #B2B5BE !important;
-}
-
-.tradingview-widget-copyright a:hover .blue-text {
-  color: #1E53E5 !important;
-}
-
-.tradingview-widget-copyright a:active .blue-text {
-  color: #1848CC !important;
-}
-
-.tradingview-widget-copyright a:visited .blue-text {
-  color: #2962FF !important;
-}
-</style></div>
-<!-- TradingView Widget END -->
-<div class="row container mt-4">
-<div class="col-md-8">
-  <h1>Crypto page</h1>
-  <p class="lead">Get the latest updates on your favorite cryptocurrencies by entering their ticker symbol below.</p>
-  <p>Stay informed and make better investment decisions with real-time data.</p>
-</div>
-<div class="col-md-4" id="fearAndGreed">
-
-<div class="container mt-4">
-<div class="fear-and-greed-container">
-    <div class="row">
-        <div class="col-md-12">
-            <h5 class="fear-and-greed-header">Fear and Greed Index</h5>
-        </div>
-    </div>
-    <div class="row fear-and-greed-info">
-        <div class="col-md-4">
-            <p class="value" id="value">30</p>
-            <p class="classification" id="classification" data-classification="Fear">
-                Fear
-            </p>
-        </div>
-        <div class="col-md-8">
-            <p class="updated" id="updated">Last Updated: 2018-02-01</p>
-        </div>
-    </div>
-</div>
-</div></div>
-</div>
-
-<div class="container mt-4">
-<h1>Cryptocurrencies by Market Cap</h1>
-<div id="output" style="margin-top: 20px; font-size: 18px;"><table style="width: 100%;">
-  <thead>
-      <tr>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Market Cap</th>
-          <th>Current Price</th>
-          <th>24h High</th>
-          <th>24h Low</th>
-          <th>Range</th>
-      </tr>
-  </thead>
-  <tbody>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/1/large/bitcoin.png?1696501400" alt="Bitcoin" style="width: 32px;"></td>
-          <td><a href="/crypto/bitcoin">Bitcoin</a></td>
-          <td>1.10 T</td>
-          <td>$55,809</td>
-          <td>$57,241</td>
-          <td>$55,363</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((55809 - 55363) / (57241 - 55363) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/279/large/ethereum.png?1696501628" alt="Ethereum" style="width: 32px;"></td>
-          <td><a href="/crypto/ethereum">Ethereum</a></td>
-          <td>282.63 B</td>
-          <td>$2,351.52</td>
-          <td>$2,410.62</td>
-          <td>$2,328.73</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((2351.52 - 2328.73) / (2410.62 - 2328.73) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/325/large/Tether.png?1696501661" alt="Tether" style="width: 32px;"></td>
-          <td><a href="/crypto/tether">Tether</a></td>
-          <td>118.09 B</td>
-          <td>$1.0</td>
-          <td>$1.002</td>
-          <td>$0.996651</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((1.0 - 0.996651) / (1.002 - 0.996651) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970" alt="BNB" style="width: 32px;"></td>
-          <td><a href="/crypto/binancecoin">BNB</a></td>
-          <td>73.39 B</td>
-          <td>$503.22</td>
-          <td>$509.4</td>
-          <td>$496.8</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((503.22 - 496.8) / (509.4 - 496.8) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/4128/large/solana.png?1718769756" alt="Solana" style="width: 32px;"></td>
-          <td><a href="/crypto/solana">Solana</a></td>
-          <td>59.93 B</td>
-          <td>$128.66</td>
-          <td>$135.0</td>
-          <td>$127.71</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((128.66 - 127.71) / (135.0 - 127.71) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/6319/large/usdc.png?1696506694" alt="USDC" style="width: 32px;"></td>
-          <td><a href="/crypto/usd-coin">USDC</a></td>
-          <td>34.94 B</td>
-          <td>$1.0</td>
-          <td>$1.002</td>
-          <td>$0.996868</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((1.0 - 0.996868) / (1.002 - 0.996868) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1696501442" alt="XRP" style="width: 32px;"></td>
-          <td><a href="/crypto/ripple">XRP</a></td>
-          <td>30.12 B</td>
-          <td>$0.536086</td>
-          <td>$0.555676</td>
-          <td>$0.533981</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((0.536086 - 0.533981) / (0.555676 - 0.533981) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/13442/large/steth_logo.png?1696513206" alt="Lido Staked Ether" style="width: 32px;"></td>
-          <td><a href="/crypto/staked-ether">Lido Staked Ether</a></td>
-          <td>23.04 B</td>
-          <td>$2,350.12</td>
-          <td>$2,406.51</td>
-          <td>$2,327.68</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((2350.12 - 2327.68) / (2406.51 - 2327.68) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/5/large/dogecoin.png?1696501409" alt="Dogecoin" style="width: 32px;"></td>
-          <td><a href="/crypto/dogecoin">Dogecoin</a></td>
-          <td>14.26 B</td>
-          <td>$0.097852</td>
-          <td>$0.099331</td>
-          <td>$0.096671</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((0.097852 - 0.096671) / (0.099331 - 0.096671) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-      <tr>
-          <td><img src="https://coin-images.coingecko.com/coins/images/1094/large/tron-logo.png?1696502193" alt="TRON" style="width: 32px;"></td>
-          <td><a href="/crypto/tron">TRON</a></td>
-          <td>12.93 B</td>
-          <td>$0.149181</td>
-          <td>$0.151199</td>
-          <td>$0.148832</td>
-          <td>
-              <div class="price-scale">
-                  <div class="current-price" style="left: calc((0.149181 - 0.148832) / (0.151199 - 0.148832) * 100%)">
-                  </div>
-              </div>
-          </td>
-      </tr>
-      
-  </tbody>
-</table></div>
-</div>
-
-<div class="button-group d-flex align-items-center justify-content-center" style="padding-top: 30px;">
-<button type="button" onclick="fetchData(1)">1</button>
-<button type="button" onclick="fetchData(2)">2</button>
-<button type="button" onclick="fetchData(3)">3</button>
-<button type="button" onclick="fetchData(4)">4</button>
-<button type="button" onclick="fetchData(5)">5</button>
-</div>
-
-
-  </main>
   
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  loadRSSFeed();
-  loadFearAndGreed();
-});
-
-function loadRSSFeed() {
-  fetch('/crypto/bitcoinDataOverview/1')
-    .then(response => response.text())  // Změna na text, protože vracíme HTML
-    .then(data => {
-      document.getElementById('output').innerHTML = data;  // Použijeme innerHTML
-    })
-    .catch(error => {
-      console.error('Error loading RSS feed:', error);
-      document.getElementById('output').innerHTML = '<p>Error loading feed.</p>';
-    });
-}
-
-function fetchData(buttonNumber) {
-  // URL pro vaše API
-  const apiUrl = `/bitcoinDataOverview/${buttonNumber}`;
-
-  fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => response.text())  // Změna na text, protože vracíme HTML
-    .then(data => {
-      document.getElementById('output').innerHTML = data || 'No data available.';  // Použijeme innerHTML
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('output').innerHTML = 'Error loading data.';
-    });
-}
-
-async function loadFearAndGreed() {
-  try {
-    const response = await fetch('/api/crypto_fear_and_greed', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'text/html'
-      }
-    });
-
-    if (response.ok) {
-      const htmlContent = await response.text(); // Získání HTML obsahu jako text
-      const fearAndGreedContainer = document.getElementById('fearAndGreed');
-
-      // Vložení HTML obsahu do určeného elementu
-      fearAndGreedContainer.innerHTML = htmlContent;
-    } else {
-      console.error("Failed to load Fear and Greed data:", response.status);
-    }
-  } catch (error) {
-    console.error("Error loading Fear and Greed data:", error);
-  }
-}
-
-
-</script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-</body></html>
+      <div class="section">
+        <h2>Support and Resistance</h2>
+        <div id="support-resistance" class="info">
+          <p>Support: <span class="recommendation">196.0 USD</span></p>
+          <p>Resistance: <span class="recommendation">232.92 USD</span></p>
+          <p>Doporučení: <span class="recommendation">Buy near support, Sell near resistance</span></p>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h2>Moving Averages</h2>
+        <div id="moving-averages" class="info">
+          <p>SMA (20): <span class="recommendation">224.61 USD</span></p>
+          <p>EMA (20): <span class="recommendation">222.96 USD</span></p>
+          <p>Doporučení: <span class="recommendation">Buy if SMA &gt; EMA</span></p>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h2>RSI and MACD</h2>
+        <div id="rsi-macd" class="info">
+          <p>RSI (14): <span class="recommendation">36.23</span></p>
+          <p>MACD: <span class="recommendation">0.38</span></p>
+          <p>MACD Signal: <span class="recommendation">1.34</span></p>
+          <p>Doporučení: <span class="recommendation">RSI &gt; 70 - Consider Selling, MACD &gt; Signal - Bullish</span>
+          </p>
+        </div>
+      </div>
+  
+      <div class="section">
+        <h2>Candlestick Patterns</h2>
+        <div id="candlestick-patterns" class="info">
+          <p>Detected Pattern: <span class="recommendation">None</span></p>
+          <p>Doporučení: <span class="recommendation">Sell</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
