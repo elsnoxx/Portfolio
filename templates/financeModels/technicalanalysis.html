@@ -1,84 +1,107 @@
 <h1>Technical Analysis Results</h1>
 <div class="container mt-5">
     <!-- Trend Analysis -->
-    <div class="section">
-        <h2>Trend Analysis</h2>
-        <div id="trend" class="info">
-            <p>Trend: 
-                <span {% if trend == 'Bullish' %} class="bullish" {% elif trend == 'Bearish' %} class="bearish" {% else %} class="neutral" {% endif %}>
-                    {{ trend }}
-                </span>
-            </p>
-            <p>Doporučení: 
-                <span {% if trend_recommendation == 'Buy' %} class="buy" {% elif trend_recommendation == 'Sell' %} class="sell" {% else %} class="neutral" {% endif %}>
-                    {{ trend_recommendation }}
-                </span>
-            </p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="section">
+                <h2>Trend Analysis</h2>
+                <div id="trend" class="info">
+                    <p>Trend:
+                        <span {% if trend=='Bullish' %} class="bullish" {% elif trend=='Bearish' %} class="bearish" {%
+                            else %} class="neutral" {% endif %}>
+                            {{ trend }}
+                        </span>
+                    </p>
+                    <p>Doporučení:
+                        <span {% if trend_recommendation=='Buy' %} class="buy" {% elif trend_recommendation=='Sell' %}
+                            class="sell" {% else %} class="neutral" {% endif %}>
+                            {{ trend_recommendation }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Support and Resistance -->
+            <div class="section">
+                <h2>Support and Resistance</h2>
+                <div id="support-resistance" class="info">
+                    <p>Support: <span>{{ support }} USD</span></p>
+                    <p>Resistance: <span>{{ resistance }} USD</span></p>
+                    <p>Doporučení:
+                        <span {% if current_price <=support %} class="buy" {% elif current_price>= resistance %}
+                            class="sell" {% else %} class="neutral" {% endif %}>
+                            Buy near support, Sell near resistance
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <!-- Moving Averages -->
+            <div class="section">
+                <h2>Moving Averages</h2>
+                <div id="moving-averages" class="info">
+                    <p>SMA (20): <span>{{ sma_20 }} USD</span></p>
+                    <p>EMA (20): <span>{{ ema_20 }} USD</span></p>
+                    <p>Doporučení:
+                        <span {% if sma_20> ema_20 %} class="buy" {% else %} class="sell" {% endif %}>
+                            {{ 'Buy' if sma_20 > ema_20 else 'Sell' }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <!-- RSI and MACD -->
+            <div class="section">
+                <h2>RSI and MACD</h2>
+                <div id="rsi-macd" class="info">
+                    <p>RSI (14):
+                        <span {% if rsi < 30 %} class="buy" {% elif rsi> 70 %} class="sell" {% else %} class="neutral"
+                            {% endif
+                            %}>
+                            {{ rsi }}
+                        </span>
+                        (Rozpětí: 0-100)
+                    </p>
+                    <p>MACD: <span>{{ macd }}</span></p>
+                    <p>MACD Signal: <span>{{ macd_signal }}</span></p>
+                    <p>Doporučení:
+                        <span {% if macd> macd_signal %} class="bullish" {% else %} class="bearish" {% endif %}>
+                            {{ 'Bullish' if macd > macd_signal else 'Bearish' }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Candlestick Patterns -->
+            <div class="section">
+                <h2>Candlestick Patterns</h2>
+                <div id="candlestick-patterns" class="info">
+                    <p>Detected Pattern:
+                        <span {% if hammer_found %} class="bullish" {% else %} class="neutral" {% endif %}>
+                            {{ 'Hammer' if hammer_found else 'None' }}
+                        </span>
+                    </p>
+                    <p>Doporučení:
+                        <span {% if hammer_found %} class="buy" {% else %} class="neutral" {% endif %}>
+                            {{ hammer_recommendation }}
+                        </span>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Support and Resistance -->
-    <div class="section">
-        <h2>Support and Resistance</h2>
-        <div id="support-resistance" class="info">
-            <p>Support: <span>{{ support }} USD</span></p>
-            <p>Resistance: <span>{{ resistance }} USD</span></p>
-            <p>Doporučení: 
-                <span {% if current_price <= support %} class="buy" {% elif current_price >= resistance %} class="sell" {% else %} class="neutral" {% endif %}>
-                    Buy near support, Sell near resistance
-                </span>
-            </p>
-        </div>
-    </div>
 
-    <!-- Moving Averages -->
-    <div class="section">
-        <h2>Moving Averages</h2>
-        <div id="moving-averages" class="info">
-            <p>SMA (20): <span>{{ sma_20 }} USD</span></p>
-            <p>EMA (20): <span>{{ ema_20 }} USD</span></p>
-            <p>Doporučení: 
-                <span {% if sma_20 > ema_20 %} class="buy" {% else %} class="sell" {% endif %}>
-                    {{ 'Buy' if sma_20 > ema_20 else 'Sell' }}
-                </span>
-            </p>
-        </div>
-    </div>
 
-    <!-- RSI and MACD -->
-    <div class="section">
-        <h2>RSI and MACD</h2>
-        <div id="rsi-macd" class="info">
-            <p>RSI (14): 
-                <span {% if rsi < 30 %} class="buy" {% elif rsi > 70 %} class="sell" {% else %} class="neutral" {% endif %}>
-                    {{ rsi }}
-                </span>
-                (Rozpětí: 0-100)
-            </p>
-            <p>MACD: <span>{{ macd }}</span></p>
-            <p>MACD Signal: <span>{{ macd_signal }}</span></p>
-            <p>Doporučení: 
-                <span {% if macd > macd_signal %} class="bullish" {% else %} class="bearish" {% endif %}>
-                    {{ 'Bullish' if macd > macd_signal else 'Bearish' }}
-                </span>
-            </p>
-        </div>
-    </div>
 
-    <!-- Candlestick Patterns -->
-    <div class="section">
-        <h2>Candlestick Patterns</h2>
-        <div id="candlestick-patterns" class="info">
-            <p>Detected Pattern: 
-                <span {% if hammer_found %} class="bullish" {% else %} class="neutral" {% endif %}>
-                    {{ 'Hammer' if hammer_found else 'None' }}
-                </span>
-            </p>
-            <p>Doporučení: 
-                <span {% if hammer_found %} class="buy" {% else %} class="neutral" {% endif %}>
-                    {{ hammer_recommendation }}
-                </span>
-            </p>
-        </div>
-    </div>
+
+
+
+
+
 </div>
