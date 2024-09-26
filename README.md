@@ -4,6 +4,8 @@
 - vytvorit jobu, ktera vytvori grafy obrazky nebo svg, ktere se pak budou zobrazovat na strance, aby se predeslo dlouhemu zpracovani a nacitani
 - stock prediction https://www.youtube.com/watch?v=0E_31WqVzCY
 - fear and greed pro akcie https://edition.cnn.com/markets/fear-and-greed - hotovo, ale premenit na to aby se generoval jednou denne obrazek abych to nebylo odkazane tolik na API
+J9GRUCXHP98P9QFK
+
 - 
 
 

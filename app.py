@@ -13,6 +13,7 @@ from src.AppLogger import setup_request_logger
 from src.HWmonitoring import get_CPU_usage, get_RAM_usage
 from src.Graphs import stockGraph
 from src.Images import generate_image_from_html
+from src.Database import GetDividends_ALL
 import datetime as dt
 import time
 
