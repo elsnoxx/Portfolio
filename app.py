@@ -218,8 +218,9 @@ def submit():
 
 @app.route('/portfolio')
 def portfolio():
-    data = portfolioTickers()
-    
+    #  data = portfolioTickers()
+    data = GetDividends_ALL()
+    print(data)
     return render_template('portfolio.html', data=data)
 
 @app.route('/basicData/<ticker_symbol>', methods=['POST'])

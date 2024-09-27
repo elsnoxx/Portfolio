@@ -5,14 +5,20 @@
 
 <table class="table table-striped">
     <thead>
-        <th><strong>Ticker</strong></th>
-        <th><strong>Units</strong></th>
+        <tr>
+            <th><strong>Ticker</strong></th>
+            <th><strong>Amount</strong></th>
+            <th><strong>Units</strong></th>
+            <th><strong>Dividend</strong></th>
+        </tr>
     </thead>
     <tbody>
-        {% for ticker, value in data.items() %}
+        {% for ticker, total_investment, total_units, total_dividend in data %}
         <tr>
             <td><strong>{{ ticker }}</strong></td>
-            <td> {{ value }}</td>
+            <td>{{ total_investment }}</td>
+            <td>{{ total_units }}</td>
+            <td>{{ total_dividend }}</td>
         </tr>
         {% endfor %}
     </tbody>

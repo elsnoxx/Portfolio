@@ -1,122 +1,120 @@
-import pandas as pd
-import pyodbc
-import datetime
+import yfinance as yf
+import psycopg2
+from psycopg2 import sql
+import time
 
-database_file_path = r"C:\\Users\\admin\\Documents\\GitHub\\Portfolio\\Portfolio.mdf"
+# Připojení k databázi PostgreSQL
+def connect_to_db():
+    conn = psycopg2.connect(
+        dbname="porfolio",
+        user="su",
+        password="pi",
+        host="192.168.88.158",
+        port="5432"
+    )
+    return conn
 
-connection_string = (
-    r"Driver={ODBC Driver 17 for SQL Server};"
-    r"Server=(localdb)\MSSQLLocalDB;"
-    r"AttachDbFilename=" + database_file_path + ";"
-    r"Database=MyDatabase;"
-    r"Trusted_Connection=yes;"
-)
+# Funkce pro uložení společnosti do databáze
+def insert_company(conn, name, ticker, sector, market_cap):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO companies (name, ticker, sector, market_cap)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (ticker) DO NOTHING
+            RETURNING id;
+            """, (name, ticker, sector, market_cap)
+        )
+        return cur.fetchone()[0]  # Vrať ID nově vložené společnosti
 
+# Funkce pro uložení finančních údajů
+def insert_financials(conn, company_id, year, revenue, expenses, net_income, dividend):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO financials (company_id, year, revenue, expenses, net_income, dividend)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (company_id, year) DO NOTHING;
+            """, (company_id, year, revenue, expenses, net_income, dividend)
+        )
 
-def GetDividends_ALL():
-    conn = pyodbc.connect(connection_string)
-    print("Připojení úspěšné!")
-    cursor = conn.cursor()
-    cursor.execute("EXEC Portfolio.dbo.Dividend_Total_ALL")
-    # Pokud uložená procedura vrací data, můžeme je načíst
-    rows = cursor.fetchall()
-    print(rows)
+# Funkce pro uložení historických cen
+def insert_historical_prices(conn, company_id, data):
+    with conn.cursor() as cur:
+        for date, prices in data.items():
+            cur.execute(
+                """
+                INSERT INTO historical_prices (company_id, date, open_price, close_price, high_price, low_price, volume)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (company_id, date) DO NOTHING;
+                """, (company_id, date, prices['Open'], prices['Close'], prices['High'], prices['Low'], prices['Volume'])
+            )
 
-    conn.close()
+# Funkce pro uložení dividend
+def insert_dividends(conn, company_id, dividends):
+    with conn.cursor() as cur:
+        for div in dividends:
+            cur.execute(
+                """
+                INSERT INTO dividends (company_id, ex_date, amount)
+                VALUES (%s, %s, %s);
+                """, (company_id, div['Ex/EFF DATE'], div['DIVIDEND AMOUNT'])
+            )
 
-def GetDividends_DTL():
-    conn = pyodbc.connect(connection_string)
-    print("Připojení úspěšné!")
-    cursor = conn.cursor()
-    cursor.execute("EXEC Portfolio.dbo.Dividend_Total_DTL")
-    # Pokud uložená procedura vrací data, můžeme je načíst
-    rows = cursor.fetchall()
-    print(rows)
+# Funkce pro získání tickerů
+def get_tickers(conn):
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT DISTINCT SUBSTRING(details FROM 1 FOR POSITION('/' IN details) - 1) AS stock_symbol FROM trades;
+            """
+        )
+        tickers = cur.fetchall()
+        return [ticker[0] for ticker in tickers]  # Vraťte seznam tickerů jako řetězce
 
-    conn.close()
-
-def convert(date_time):
-    # Aktuální formát v CSV: "20/02/2024 16:55:20"
-    format_csv = '%d/%m/%Y %H:%M:%S'
-    # Formát pro převod do datetime objektu
-    format_datetime = '%Y-%m-%d %H:%M:%S'
+# Hlavní funkce pro získání dat a jejich uložení
+def main():
+    start = time.time()
+    conn = connect_to_db()
+    tickers = get_tickers(conn)
     
-    datetime_str = datetime.datetime.strptime(date_time, format_csv)
-    # Převedení na formát pro vložení do databáze
-    datetime_str = datetime_str.strftime(format_datetime)
+    print("Získané tickery:", tickers)
 
-    return datetime_str
+    for ticker in tickers:
+        stock = yf.Ticker(ticker)
 
+        # Získání základních údajů o společnosti
+        info = stock.info
+        name = info.get('longName', 'N/A')
+        sector = info.get('sector', 'N/A')
+        market_cap = info.get('marketCap', 0)
 
-GetDividends_ALL()
-GetDividends_DTL()
+        # Uložení společnosti do databáze
+        company_id = insert_company(conn, name, ticker, sector, market_cap)
 
-# df = pd.read_csv(r'etoro-account-statement.csv')
+        # Získání a uložení finančních údajů
+        financials = stock.financials.transpose()  # Transponuje DataFrame
+        for year in financials.index:
+            year_as_int = year.year  # Ujistěte se, že `year` je typ `integer`
+            insert_financials(conn, company_id, year_as_int, 
+                              financials.loc[year]['Total Revenue'], 
+                              financials.loc[year]['Gross Profit'], 
+                              financials.loc[year]['Net Income'], 
+                              info.get('dividendRate', 0))
 
-# database_file_path = r"C:\\Users\\admin\\Documents\\GitHub\\Portfolio\\Portfolio.mdf"
+        # Získání historických cen
+        historical_data = stock.history(period="5y")  # Získání historických dat za posledních 5 let
+        insert_historical_prices(conn, company_id, historical_data.to_dict(orient='index'))
 
-# connection_string = (
-#     r"Driver={ODBC Driver 17 for SQL Server};"
-#     r"Server=(localdb)\MSSQLLocalDB;"
-#     r"AttachDbFilename=" + database_file_path + ";"
-#     r"Database=MyDatabase;"
-#     r"Trusted_Connection=yes;"
-# )
+        # Získání dividend
+        dividends = stock.dividends.to_frame().reset_index().rename(columns={0: 'DIVIDEND AMOUNT'})
+        print(dividends)
+        insert_dividends(conn, company_id, dividends.to_dict(orient='records'))
 
-# try:
-#     # Připojení k databázi
-#     conn = pyodbc.connect(connection_string)
-#     print("Připojení úspěšné!")
-#     cursor = conn.cursor()
-#     cursor.execute("EXEC Portfolio.dbo.Dividend_Total_ALL")
-#     # Pokud uložená procedura vrací data, můžeme je načíst
-#     rows = cursor.fetchall()
+    conn.commit()  # Uložení změn do databáze
+    conn.close()  # Uzavření připojení
+    konec = time.time()
+    print("Cyklus běžel:", konec - start, "sekund")
 
-#     # Výpis výsledků
-#     for row in rows:
-#         print(row)
-#     # # Vytvoření kurzoru pro vykonávání dotazů
-#     # 
-#     # for index, row in df.iterrows():
-#     #     if (row["Type"] != "Dividend" and row["Type"] != 'Edit Stop Loss' and row["Type"] != 'Deposit'):
-#     #         # print(f"-------------------------------------------------------")
-#     #         # print(f"Hodnota ve sloupci 'Date': {row["Date"]}")
-#     #         # print(f"Hodnota ve sloupci 'Type': {row["Type"]}")
-#     #         # print(f"Hodnota ve sloupci 'Details': {row["Details"]}")
-#     #         # print(f"Hodnota ve sloupci 'Amount': {row["Amount"]}")
-#     #         # print(f"Hodnota ve sloupci 'Units': {row["Date"]}")
-#     #         if (row["Amount"] != '-' and row["Amount"] != ' ' and row["Units"] != '-'):
-#     #             cursor.execute("""
-#     #                 INSERT INTO [Portfolio].[dbo].[Trades] ( Date, Type, Details, Amount, Units)
-#     #                 VALUES (?, ?, ?, ?, ?)
-#     #             """, 
-#     #             convert(row["Date"]), row["Type"], row["Details"], float(row["Amount"]), float(row["Units"]))
-#     #             conn.commit()
-            
-#     #     if (row["Type"] == "Dividend"):
-#     #         # print(f"-------------------------------------------------------")
-#     #         # print(f"Hodnota ve sloupci 'Date': {row["Date"]}")
-#     #         # print(f"Hodnota ve sloupci 'Type': {row["Type"]}")
-#     #         # print(f"Hodnota ve sloupci 'Details': {row["Details"]}")
-#     #         # print(f"Hodnota ve sloupci 'Amount': {row["Amount"]}")
-#     #         if (row["Amount"] != '-' or row["Amount"] != ' ' or row["Units"] != '-'):
-#     #             cursor.execute("""
-#     #                 INSERT INTO [Portfolio].[dbo].[Dividends] (Date, Type, Details, Amount)
-#     #                 VALUES (?, ?, ?, ?)
-#     #             """, 
-#     #             convert(row["Date"]), row["Type"], row["Details"], float(row["Amount"]))
-#     #             conn.commit()
-#     # # Příklad dotazu
-#     # cursor.execute("SELECT * FROM [Portfolio].[dbo].[Dividends]")
-#     # cursor.execute("SELECT * FROM [Portfolio].[dbo].[Trades]")
-
-#     # # Výpis výsledků dotazu
-#     # for row in cursor.fetchall():
-#     #     print(row)
-
-# except pyodbc.Error as e:
-#     print(f"Chyba připojení: {e}")
-
-# finally:
-#     # Uzavření připojení
-#     conn.close()
+if __name__ == "__main__":
+    main()
