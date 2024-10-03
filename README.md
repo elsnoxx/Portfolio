@@ -8,6 +8,7 @@ J9GRUCXHP98P9QFK
 
 - 
 
+- Sreality.cz - API - https://www.sreality.cz/api/cs/v2/estates?category_main_cb=1&category_type_cb=1&locality_region_id=12&page=1&per_page=100
 
 - Akcie
         - dodelat vypocet DCF
